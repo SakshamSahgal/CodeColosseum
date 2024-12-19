@@ -1,0 +1,53 @@
+services:
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+      args:
+        BACKEND_PORT: ${BACKEND_PORT}
+        CORS_ORIGIN: ${CORS_ORIGIN}
+        OAUTH_CLIENT_ID: ${OAUTH_CLIENT_ID}
+        OAUTH_CLIENT_SECRET: ${OAUTH_CLIENT_SECRET}
+        JWT_TOKEN_TIMEOUT: ${JWT_TOKEN_TIMEOUT}
+        JWT_SECRET: ${JWT_SECRET}
+    ports:
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
+    volumes:
+      - ./Backend:/app # Mount the local Backend directory to /app in the container
+    environment:
+      - BACKEND_PORT=${BACKEND_PORT}
+      - CORS_ORIGIN=${CORS_ORIGIN}
+      - OAUTH_CLIENT_ID=${OAUTH_CLIENT_ID}
+      - OAUTH_CLIENT_SECRET=${OAUTH_CLIENT_SECRET}
+      - JWT_TOKEN_TIMEOUT=${JWT_TOKEN_TIMEOUT}
+      - JWT_SECRET=${JWT_SECRET}
+  frontend:
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+      args:
+        FRONTEND_PORT: ${FRONTEND_PORT}
+        OAUTH_CLIENT_ID: ${OAUTH_CLIENT_ID}
+        BACKEND_PORT: ${BACKEND_PORT}
+    ports:
+      - "${FRONTEND_PORT}:${FRONTEND_PORT}" # map the Host's FRONTEND_PORT to the container's FRONTEND_PORT port
+    environment:
+      - PORT=${FRONTEND_PORT} # Set the PORT environment variable to the FRONTEND_PORT value so that the React app listens on FRONTEND_PORT
+      - REACT_APP_OAUTH_CLIENT_ID=${OAUTH_CLIENT_ID}
+      - REACT_APP_BASE_URL=http://localhost:${BACKEND_PORT}
+    volumes:
+      - ./Frontend:/app # Mount the local Frontend directory to /app in the container
+  # judge0:
+  #   image: judge0/api:1.13.0 # Use the latest stable version of Judge0
+  #   build:
+  #     args:
+  #       JUDGE0_PORT: ${JUDGE0_PORT}
+  #   ports:
+  #     - "${JUDGE0_PORT}:${JUDGE0_PORT}" # Map the Host's JUDGE0_PORT to the container's JUDGE0_PORT port
+  #   environment:
+  #     - JUDGE0_PORT=${JUDGE0_PORT}
+  #   networks:
+  #     - app-network
+networks:
+  app-network:
+    driver: bridge
