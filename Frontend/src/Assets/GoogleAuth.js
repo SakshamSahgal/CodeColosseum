@@ -4,6 +4,10 @@ import axios from 'axios';
 
 function GoogleLogin() {
 
+    if (localStorage.getItem('userInfo')) {
+        window.location.href = '/dashboard';
+    }
+
     const responseGoogle = async (response) => {
         try {
             if (response.code) {

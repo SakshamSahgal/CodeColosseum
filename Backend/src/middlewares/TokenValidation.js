@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 function isAdmin(req, res, next) {
-    // console.log("checking if request is from admin");
+    console.log(`Checking if user is admin`);
     if (!req.headers.authorization) {
         res.status(401).send("Unauthorized, no token provided");
     }
@@ -31,8 +31,9 @@ function isUser(req, res, next) {
 }
 
 function isValidToken(token) {
+    console.log(`checking if token is valid : ${token}`);
     try {
-        jwt.verify(token, process.env.SECRET);
+        const verifyResponse = jwt.verify(token, process.env.JWT_SECRET);
         return true;
     } catch (error) {
         return false;
