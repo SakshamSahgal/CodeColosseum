@@ -1,9 +1,10 @@
 import SimpleNavbar from '../Components/Navbar';
-import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { Tab } from 'react-bootstrap';
 import { Nav } from 'react-bootstrap';
 import AdminTab from '../Assets/AdminTab';
+import makeApiRequest from '../Assets/Apis';
+
 function AdminConsole() {
 
   const [activeKey, setActiveKey] = useState("systemInfo");
@@ -17,16 +18,12 @@ function AdminConsole() {
     console.log("Tab selected:", eventKey);
     setData("Loading..."); // Clear the data
     setActiveKey(eventKey); // Update the active key
-    axios.get(`/admin/${eventKey}`, {
-      headers: {
-        Authorization: `${JSON.parse(localStorage.getItem('userInfo')).token}`
+
+    makeApiRequest({
+      url: `/admin/${eventKey}`,
+      onSuccess: (data) => {
+        setData(data);
       }
-    }, []).then((response) => {
-      console.log(response.data);
-      setData(response.data);
-    }).catch((error) => {
-      console.log("Error while fetching system info");
-      console.log(error);
     });
   };
 

@@ -1,28 +1,41 @@
+const axios = require('axios');
 
+//create an axios instance
+const instance = axios.create({
+    baseURL: process.env.JUDGE0_URL,
+});
 
 function systemInfo(req, res) {
-    //wait for 3 seconds
-    setTimeout(() => {
-        res.status(200).json("System Info");
-    }, 3000);
+    //send a get request to the judge0 api
+    instance.get("/system_info").then((response) => {
+        res.status(200).json(response.data);
+    }).catch((error) => {
+        res.status(500).json(error);
+    });
 }
 
 function configInfo(req, res) {
-    setTimeout(() => {
-        res.status(200).json("Config Info");
-    }, 3000);
+    instance.get("/config_info").then((response) => {
+        res.status(200).json(response.data);
+    }).catch((error) => {
+        res.status(500).json(error);
+    });
 }
 
 function statistics(req, res) {
-    setTimeout(() => {
-        res.status(200).json("Statistics");
-    }, 3000);
+    instance.get("/statistics").then((response) => {
+        res.status(200).json(response.data);
+    }).catch((error) => {
+        res.status(500).json(error);
+    });
 }
 
 function workers(req, res) {
-    setTimeout(() => {
-        res.status(200).json("Workers");
-    }, 3000);
+    instance.get("/workers").then((response) => {
+        res.status(200).json(response.data);
+    }).catch((error) => {
+        res.status(500).json(error);
+    });
 }
 
 module.exports = { systemInfo, configInfo, statistics, workers };

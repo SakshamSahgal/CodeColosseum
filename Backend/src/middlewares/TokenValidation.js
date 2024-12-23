@@ -14,7 +14,7 @@ function isAdmin(req, res, next) {
         if (decodedToken.email == process.env.ADMIN_EMAIL) {
             next();
         } else {
-            res.status(401).send("Unauthorized, not an admin");
+            res.status(403).send("Forbidden, not an admin");
         }
     }
 }
