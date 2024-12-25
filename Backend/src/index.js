@@ -5,6 +5,7 @@ const authRouter = require("./routes/authRouter.js");
 const adminRouter = require("./routes/adminRouter.js");
 const compilerRouter = require("./routes/compilerRouter.js");
 const { isAdmin, isUser } = require("./middlewares/TokenValidation.js");
+const { connectDB } = require("./db/mongoOperations.js");
 
 app.use("/auth", authRouter);
 app.use("/admin", isAdmin, adminRouter);
@@ -16,4 +17,5 @@ app.get("/hi", (req, res) => {
 
 app.listen(port, () => {
   console.log(`My Server running on port ${port}`)
+  connectDB();
 })

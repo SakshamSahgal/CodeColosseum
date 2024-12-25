@@ -14,7 +14,7 @@ function SubmitCode({ selectedLanguageId, sourceCode }) {
                 source_code: sourceCode,
             },
             onSuccess: (data) => {
-                console.log(data);
+               alert('Submission created successfully');
             },
         });
     }
