@@ -38,4 +38,40 @@ function workers(req, res) {
     });
 }
 
-module.exports = { systemInfo, configInfo, statistics, workers };
+function fetchLanguages(req, res) {
+    instance.get("/languages").then((response) => {
+        res.status(200).json(response.data);
+    }).catch((error) => {
+        res.status(500).json(error);
+    });
+}
+
+function createSubmission(req, res) {
+    const data = {
+        source_code: req.body.source_code,
+        language_id: req.body.language_id,
+        // stdin: req.body.stdin,
+        // expected_output: req.body.expected_output,
+        // cpu_time_limit: req.body.cpu_time_limit,
+        // cpu_extra_time: req.body.cpu_extra_time,
+        // wall_time_limit: req.body.wall_time_limit,
+        // memory_limit: req.body.memory_limit,
+        // stack_limit: req.body.stack_limit,
+        // max_processes_and_or_threads: req.body.max_processes_and_or_threads,
+        // enable_per_process_and_thread_time_limit: req.body.enable_per_process_and_thread_time_limit,
+        // enable_per_process_and_thread_memory_limit: req.body.enable_per_process_and_thread_memory_limit,
+        // max_file_size: req.body.max_file_size,
+        // number_of_runs: req.body.number_of_runs,
+        // callback_url: req.body.callback_url,
+        // compile: req.body.compile,
+        // save: req.body.save
+    };
+    console.log(data);
+    instance.post("/submissions/?base64_encoded=false&wait=false", data).then((response) => {
+        res.status(200).json(response.data);
+    }).catch((error) => {
+        res.status(500).json(error);
+    });
+}
+
+module.exports = { systemInfo, configInfo, statistics, workers, fetchLanguages, createSubmission };

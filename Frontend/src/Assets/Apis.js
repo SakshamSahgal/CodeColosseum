@@ -9,6 +9,7 @@ import axios from 'axios';
  * @param {Function} onError - Callback for handling errors.
  */
 function makeApiRequest({ url, method = 'GET', data = null, onSuccess, onError }) {
+    
     const token = JSON.parse(localStorage.getItem('userInfo'))?.token;
 
     if (!token) {
