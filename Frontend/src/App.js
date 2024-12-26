@@ -5,6 +5,7 @@ import PageNotFound from './Assets/PageNotFound';
 import AdminConsole from './Pages/AdminConsole.js';
 import PrivateRoute from './Assets/PrivateRoute.js';
 import Submissions from './Pages/Submissions.js';
+import Submission from './Pages/Submission.js';
 
 function App() {
 
@@ -14,8 +15,9 @@ function App() {
         <Route path="/" element={<GoogleAuth />} />
         <Route path='/dashboard' element={<PrivateRoute element={<Dashboard />} />} />
         <Route path='/adminConsole' element={<PrivateRoute element={<AdminConsole />} />} />
+        <Route path='/submissions/:email' element={<Submissions />} />
+        <Route path='/submission/:email/:submissionToken' element={<Submission />} />
         <Route path='*' element={<PageNotFound />} />
-        <Route path='/:email/submissions' element={<Submissions />} />
       </Routes>
     </BrowserRouter>
   );

@@ -72,7 +72,7 @@ function createSubmission(req, res) {
     console.log(data);
     instance.post("/submissions/?base64_encoded=false&wait=false", data).then((response) => {
 
-        // console.log(response.data);
+        // decoding the JWT token to get the email of the requester
         const decodedToken = jwt.decode(req.headers.authorization);
 
         writeDB("Main", "Submissions", {
@@ -90,9 +90,23 @@ function createSubmission(req, res) {
 }
 
 function fetchSubmission(req, res) {
-    const token = req.params.submissionToken;
-    instance.get(`/submissions/${token}`).then((response) => {
-        res.status(200).json(response.data);
+    const email = req.params.email;
+    const submissionToken = req.params.submissionToken;
+    console.log(email);
+    console.log(submissionToken);
+
+    instance.get(`/submissions/${submissionToken}`).then((response) => {
+        let submissionData = response.data;
+        readDB("Main", "Submissions", {
+            email: email,
+            token: submissionToken,
+        }).then((result) => {
+            //create a new object with both the responses
+            response = { ...submissionData, ...result[0] };
+            res.status(200).json(response);
+        }).catch((error) => {
+            res.status(500).json(error);
+        });
     }).catch((error) => {
         res.status(500).json(error);
     });
