@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { writeDB, readDB } = require('../db/mongoOperations');
+const { writeDB, readDB, skipRead, countDocuments } = require('../db/mongoOperations');
 const jwt = require('jsonwebtoken');
 
 
@@ -112,15 +112,74 @@ function fetchSubmission(req, res) {
     });
 }
 
-function fetchAllSubmissions(req, res) {
+
+
+async function fetchSubmissions(req, res) {
+
     console.log(req.params.email);
-    readDB("Main", "Submissions", {
-        email: req.params.email,
-    }).then((response) => {
-        res.status(200).json(response);
-    }).catch((error) => {
+    console.log(req.params.maxEntriesPerPage);
+    console.log(req.params.pageNumber);
+
+    if (!req.params.email) {
+        res.status(400).json({ message: "Email is required" });
+        return;
+    }
+
+    if (!req.params.maxEntriesPerPage || isNaN(req.params.maxEntriesPerPage)) {
+        res.status(400).json({ message: "maxEntriesPerPage is required" });
+        return;
+    }
+
+    if (!req.params.pageNumber || isNaN(req.params.pageNumber)) {
+        res.status(400).json({ message: "pageNumber is required" });
+        return;
+    }
+
+    try {
+        const languages = (await instance.get("/languages")).data;
+        // console.log(languages);
+
+        let projection = {
+            email: 0,
+            source_code: 0,
+        };
+
+        let query = {
+            email: req.params.email,
+        };
+
+        let maxEntriesPerPage = req.params.maxEntriesPerPage ? parseInt(req.params.maxEntriesPerPage) : 10; //Setting the maximum number of entries per page
+        let NoOfEntries = await countDocuments("Main", "Submissions", {}) //Counting the number of entries in the database     
+        let TotalPages = Math.ceil(NoOfEntries / parseInt(maxEntriesPerPage)); //Calculating the total number of pages
+        let passedPageNumber = req.params.pageNumber ? parseInt(req.params.pageNumber) : 1; //Getting the page number from the request
+        var curPage = Math.max(Math.min(Number(passedPageNumber), TotalPages), 1) //Clamping the page number between 1 and TotalPages
+        const entriesToSkip = (parseInt(curPage) - 1) * parseInt(maxEntriesPerPage);    // calculate the number of entries to skip
+
+        console.log("TotalPages: ", TotalPages);
+        console.log("curPage: ", curPage);
+        console.log("maxEntriesPerPage: ", maxEntriesPerPage);
+
+        //fetch all submissions of the user from the database and sort them in descending order of created_at so that the latest submission comes first in the array
+
+
+        const submissions = (await skipRead("Main", "Submissions", query, projection, { created_at: -1 }, entriesToSkip, parseInt(maxEntriesPerPage)));
+        // console.log(submissions);
+
+        //iterate over all submissions and add the language name to the submission
+        submissions.forEach((submission) => {
+            languages.forEach((language) => {
+                if (submission.language_id === language.id) {
+                    submission.language_name = language.name;
+                }
+            });
+        });
+
+        res.status(200).json(submissions);
+    } catch (error) {
         res.status(500).json(error);
-    });
+    }
+
+
 }
 
-module.exports = { systemInfo, configInfo, statistics, workers, fetchLanguages, createSubmission, fetchSubmission, fetchAllSubmissions };
+module.exports = { systemInfo, configInfo, statistics, workers, fetchLanguages, createSubmission, fetchSubmission, fetchSubmissions };
