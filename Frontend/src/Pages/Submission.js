@@ -60,13 +60,6 @@ function Submission() {
                 </tr>
                 <tr>
                   <td>
-                    <BsTerminal className="me-2" />
-                    stdout
-                  </td>
-                  <td>{submission.stdout || 'N/A'}</td>
-                </tr>
-                <tr>
-                  <td>
                     <BsXCircle className="me-2" />
                     stderr
                   </td>
@@ -78,13 +71,6 @@ function Submission() {
                     language_id
                   </td>
                   <td>{submission.language_id || 'N/A'}</td>
-                </tr>
-                <tr>
-                  <td>
-                    <BsTerminal className="me-2" />
-                    compile_output
-                  </td>
-                  <td>{submission.compile_output || 'N/A'}</td>
                 </tr>
                 <tr>
                   <td>
@@ -117,11 +103,30 @@ function Submission() {
                 </tr>
               </tbody>
             </Table>
-            <div className="text-center mt-3">
-              <p>
-                <strong>Token:</strong> {submission.token}
-              </p>
-            </div>
+          </Card.Body>
+        </Card>
+        <Card className="mt-3">
+          <Card.Header className="text-center">
+            <h3>compile_output</h3>
+          </Card.Header>
+          <Card.Body>
+            <CodeMirror
+              value={submission.compile_output ? submission.compile_output : ''}
+              height="500px"
+              editable={false}
+            />
+          </Card.Body>
+        </Card>
+        <Card className="mt-3">
+          <Card.Header className="text-center">
+            <h3>Stdout</h3>
+          </Card.Header>
+          <Card.Body>
+            <CodeMirror
+              value={submission.stdout ? submission.stdout : ''}
+              height="500px"
+              editable={false}
+            />
           </Card.Body>
         </Card>
         <Card className="mt-3">
@@ -130,7 +135,7 @@ function Submission() {
           </Card.Header>
           <Card.Body>
             <CodeMirror
-              value={submission.source_code}
+              value={submission.source_code ? submission.source_code : ''}
               height="500px"
               editable={false}
             />
