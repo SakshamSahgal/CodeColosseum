@@ -7,7 +7,7 @@ import SimpleNavbar from "../Components/Navbar.js";
 function Submissions() {
   const { email } = useParams();
   const [submissions, setSubmissions] = useState([]);
-
+  
   useEffect(() => {
     makeApiRequest({
       url: `/compiler/allSubmissions/${email}`,

@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Navbar, Nav, Dropdown } from 'react-bootstrap';
+import { useState, useEffect } from 'react';
+import { Navbar, Nav, NavLink, Dropdown } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+
 
 function SimpleNavbar() {
   const [userInfo, setUserInfo] = useState(null);
@@ -18,7 +20,19 @@ function SimpleNavbar() {
 
   return (
     <Navbar bg="dark" expand="lg" className="mb-4">
-      <Navbar.Collapse className="justify-content-end">
+      {/* <Navbar.Brand as={Link} to="/" className="text-light">
+        MyApp
+      </Navbar.Brand> */}
+      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <Navbar.Collapse id="basic-navbar-nav" className="justify-content-between">
+        <Nav>
+          <NavLink as={Link} to="/dashboard" className="text-light">
+            Dashboard
+          </NavLink>
+          <NavLink as={Link} to={`/submissions/${userInfo?.email}`} className="text-light">
+            Submissions
+          </NavLink>
+        </Nav>
         <Nav>
           {userInfo && (
             <Dropdown align="end">

@@ -5,6 +5,7 @@ import { Card, Table, Spinner } from 'react-bootstrap';
 import { BsCheckCircle, BsXCircle, BsClock, BsCpu, BsTerminal } from 'react-icons/bs';
 import SimpleNavbar from '../Components/Navbar';
 import CodeMirror from '@uiw/react-codemirror';
+import formatTimeElapsed from '../Assets/Utils';
 
 function Submission() {
   const { submissionToken, email } = useParams();
@@ -42,6 +43,10 @@ function Submission() {
         <Card>
           <Card.Header className="text-center">
             <h3>Submission Details</h3>
+            {/* submitted by */}
+            <p>
+              <strong>Submitted By:</strong> {submission.email}
+            </p>
           </Card.Header>
           <Card.Body>
             <Table striped bordered hover>
@@ -49,9 +54,37 @@ function Submission() {
                 <tr>
                   <td>
                     <BsTerminal className="me-2" />
-                    Output
+                    Submitted
+                  </td>
+                  <td>{formatTimeElapsed(submission.created_at) || 'N/A'}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <BsTerminal className="me-2" />
+                    stdout
                   </td>
                   <td>{submission.stdout || 'N/A'}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <BsXCircle className="me-2" />
+                    stderr
+                  </td>
+                  <td>{submission.stderr || 'No Errors'}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <BsTerminal className="me-2" />
+                    language_id
+                  </td>
+                  <td>{submission.language_id || 'N/A'}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <BsTerminal className="me-2" />
+                    compile_output
+                  </td>
+                  <td>{submission.compile_output || 'N/A'}</td>
                 </tr>
                 <tr>
                   <td>
@@ -67,19 +100,20 @@ function Submission() {
                   </td>
                   <td>{submission.memory || 'N/A'} KB</td>
                 </tr>
-                <tr>
-                  <td>
-                    <BsXCircle className="me-2" />
-                    Error Output
-                  </td>
-                  <td>{submission.stderr || 'No Errors'}</td>
-                </tr>
+
                 <tr>
                   <td>
                     <BsCheckCircle className="me-2" />
                     Status
                   </td>
                   <td>{submission.status.description}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <BsTerminal className="me-2" />
+                    Message
+                  </td>
+                  <td>{submission.message || 'N/A'}</td>
                 </tr>
               </tbody>
             </Table>
