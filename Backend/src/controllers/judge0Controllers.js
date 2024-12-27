@@ -53,7 +53,7 @@ function createSubmission(req, res) {
     const data = {
         source_code: req.body.source_code,
         language_id: req.body.language_id,
-        // stdin: req.body.stdin,
+        stdin: req.body.stdin,
         // expected_output: req.body.expected_output,
         // cpu_time_limit: req.body.cpu_time_limit,
         // cpu_extra_time: req.body.cpu_extra_time,

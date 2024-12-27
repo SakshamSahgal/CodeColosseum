@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import makeApiRequest from '../Assets/Apis';
-import { Card, Table, Spinner } from 'react-bootstrap';
+import { Card, Table, Spinner, Container } from 'react-bootstrap';
 import { BsCheckCircle, BsXCircle, BsClock, BsCpu, BsTerminal } from 'react-icons/bs';
 import SimpleNavbar from '../Components/Navbar';
 import CodeMirror from '@uiw/react-codemirror';
 import formatTimeElapsed from '../Assets/Utils';
+import StdoutPallet from '../Components/StdoutPallet';
+import CompilerOutputPallet from '../Components/CompilerOutputPallet';
 
 function Submission() {
   const { submissionToken, email } = useParams();
@@ -39,7 +41,7 @@ function Submission() {
   return (
     <>
       <SimpleNavbar />
-      <div className="container mt-5">
+      <Container className='mt-5'>
         <Card>
           <Card.Header className="text-center">
             <h3>Submission Details</h3>
@@ -105,30 +107,8 @@ function Submission() {
             </Table>
           </Card.Body>
         </Card>
-        <Card className="mt-3">
-          <Card.Header className="text-center">
-            <h3>compile_output</h3>
-          </Card.Header>
-          <Card.Body>
-            <CodeMirror
-              value={submission.compile_output ? submission.compile_output : ''}
-              height="500px"
-              editable={false}
-            />
-          </Card.Body>
-        </Card>
-        <Card className="mt-3">
-          <Card.Header className="text-center">
-            <h3>Stdout</h3>
-          </Card.Header>
-          <Card.Body>
-            <CodeMirror
-              value={submission.stdout ? submission.stdout : ''}
-              height="500px"
-              editable={false}
-            />
-          </Card.Body>
-        </Card>
+        <CompilerOutputPallet compile_output={submission.compile_output} />
+        <StdoutPallet stdout={submission.stdout} />
         <Card className="mt-3">
           <Card.Header className="text-center">
             <h3>Code</h3>
@@ -141,7 +121,7 @@ function Submission() {
             />
           </Card.Body>
         </Card>
-      </div>
+      </Container>
     </>
   );
 }

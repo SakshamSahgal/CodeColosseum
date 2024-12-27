@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-
 
 function SimpleNavbar() {
   const [userInfo, setUserInfo] = useState(null);
@@ -26,7 +24,7 @@ function SimpleNavbar() {
           <Nav.Link href="/dashboard">Dashboard</Nav.Link>
           <Nav.Link href={`/submissions/${userInfo?.email}`}>Submissions</Nav.Link>
         </Nav>
-        {userInfo ? (
+        {userInfo && (
           <Nav className="ms-auto"> {/* Use ms-auto here to push the NavDropdown to the right */}
             <NavDropdown
               title={<img src={userInfo.pictdure} alt="Profile" style={{ width: 30, height: 30, borderRadius: '50%' }} />}
@@ -41,12 +39,7 @@ function SimpleNavbar() {
               </NavDropdown.Item>
             </NavDropdown>
           </Nav>
-        ) : (
-          <Nav className="ms-auto">
-            <Nav.Link href="/">Login</Nav.Link>
-          </Nav>
         )}
-
       </Container>
     </Navbar>
   );
