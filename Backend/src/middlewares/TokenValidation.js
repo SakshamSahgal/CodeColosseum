@@ -31,7 +31,7 @@ function isUser(req, res, next) {
 }
 
 function isValidToken(token) {
-    console.log(`checking if token is valid : ${token}`);
+    console.log(`checking if token is valid`);
     try {
         const verifyResponse = jwt.verify(token, process.env.JWT_SECRET);
         return true;

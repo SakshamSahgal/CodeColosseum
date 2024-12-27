@@ -1,6 +1,7 @@
 const { google } = require('googleapis');
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
+const { captureAccount } = require("../controllers/CaptureAccount.js");
 
 const GoogleLogin = async (req, res) => {
     try {
@@ -17,6 +18,8 @@ const GoogleLogin = async (req, res) => {
         const { email, name, picture } = userRes.data; // get the email, name, and picture from the user info
 
         const token = jwt.sign({ email, name, picture }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_TOKEN_TIMEOUT }); // create a token with the user info
+
+        await captureAccount(email, name, picture); // call the captureAccount function to add the user to the database
 
         res.status(200).json({
             message: "Google Login Successful",

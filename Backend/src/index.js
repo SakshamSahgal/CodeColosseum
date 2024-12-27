@@ -6,10 +6,11 @@ const adminRouter = require("./routes/adminRouter.js");
 const compilerRouter = require("./routes/compilerRouter.js");
 const { isAdmin, isUser } = require("./middlewares/TokenValidation.js");
 const { connectDB } = require("./db/mongoOperations.js");
+const { updateActivity } = require("./middlewares/updateActivity.js");
 
 app.use("/auth", authRouter);
-app.use("/admin", isAdmin, adminRouter);
-app.use("/compiler", isUser, compilerRouter);
+app.use("/admin", isAdmin, updateActivity, adminRouter);
+app.use("/compiler", isUser, updateActivity, compilerRouter);
 
 app.listen(port, () => {
   console.log(`My Server running on port ${port}`)
