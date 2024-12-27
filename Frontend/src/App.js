@@ -15,8 +15,8 @@ function App() {
         <Route path="/" element={<GoogleAuth />} />
         <Route path='/dashboard' element={<PrivateRoute element={<Dashboard />} />} />
         <Route path='/adminConsole' element={<PrivateRoute element={<AdminConsole />} />} />
-        <Route path='/submissions/:email' element={<Submissions />} />
-        <Route path='/submission/:email/:submissionToken' element={<Submission />} />
+        <Route path='/submissions/:email' element={<PrivateRoute element={<Submissions />} />} />
+        <Route path='/submission/:email/:submissionToken' element={<PrivateRoute element={<Submission />} />} />
         <Route path='*' element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>

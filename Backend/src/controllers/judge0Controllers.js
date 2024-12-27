@@ -149,7 +149,7 @@ async function fetchSubmissions(req, res) {
         };
 
         let maxEntriesPerPage = req.params.maxEntriesPerPage ? parseInt(req.params.maxEntriesPerPage) : 10; //Setting the maximum number of entries per page
-        let NoOfEntries = await countDocuments("Main", "Submissions", {}) //Counting the number of entries in the database     
+        let NoOfEntries = await countDocuments("Main", "Submissions", query) //Counting the number of entries in the database that match the query
         let TotalPages = Math.ceil(NoOfEntries / parseInt(maxEntriesPerPage)); //Calculating the total number of pages
         let passedPageNumber = req.params.pageNumber ? parseInt(req.params.pageNumber) : 1; //Getting the page number from the request
         var curPage = Math.max(Math.min(Number(passedPageNumber), TotalPages), 1) //Clamping the page number between 1 and TotalPages
@@ -174,7 +174,13 @@ async function fetchSubmissions(req, res) {
             });
         });
 
-        res.status(200).json(submissions);
+        let response = {
+            submissions: submissions,
+            totalPages: TotalPages,
+            totalEntries: NoOfEntries
+        };
+
+        res.status(200).json(response);
     } catch (error) {
         res.status(500).json(error);
     }

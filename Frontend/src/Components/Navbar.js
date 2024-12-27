@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Navbar, Nav, NavLink, Dropdown } from 'react-bootstrap';
+import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 
@@ -19,45 +19,35 @@ function SimpleNavbar() {
   };
 
   return (
-    <Navbar bg="dark" expand="lg" className="mb-4">
-      {/* <Navbar.Brand as={Link} to="/" className="text-light">
-        MyApp
-      </Navbar.Brand> */}
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
-      <Navbar.Collapse id="basic-navbar-nav" className="justify-content-between">
-        <Nav>
-          <NavLink as={Link} to="/dashboard" className="text-light">
-            Dashboard
-          </NavLink>
-          <NavLink as={Link} to={`/submissions/${userInfo?.email}`} className="text-light">
-            Submissions
-          </NavLink>
+    <Navbar bg="dark" data-bs-theme="dark">
+      <Container>
+        <Navbar.Brand href="/dashboard">CC</Navbar.Brand>
+        <Nav className="me-auto">
+          <Nav.Link href="/dashboard">Dashboard</Nav.Link>
+          <Nav.Link href={`/submissions/${userInfo?.email}`}>Submissions</Nav.Link>
         </Nav>
-        <Nav>
-          {userInfo && (
-            <Dropdown align="end">
-              <Dropdown.Toggle variant="light" id="dropdown-basic">
-                <img
-                  src={userInfo.picture}
-                  alt="profile"
-                  className="rounded-circle"
-                  style={{ width: '30px', height: '30px' }}
-                />
-              </Dropdown.Toggle>
+        {userInfo ? (
+          <Nav className="ms-auto"> {/* Use ms-auto here to push the NavDropdown to the right */}
+            <NavDropdown
+              title={<img src={userInfo.pictdure} alt="Profile" style={{ width: 30, height: 30, borderRadius: '50%' }} />}
+              align="end"
+              className="ms-auto"  // Ensures it's aligned to the right
+            >
+              <NavDropdown.Item>Name : <strong>{userInfo.name}</strong></NavDropdown.Item>
+              <NavDropdown.Item>Email : {userInfo.email}</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item onClick={Logout}>
+                Logout
+              </NavDropdown.Item>
+            </NavDropdown>
+          </Nav>
+        ) : (
+          <Nav className="ms-auto">
+            <Nav.Link href="/">Login</Nav.Link>
+          </Nav>
+        )}
 
-              <Dropdown.Menu>
-                <Dropdown.ItemText>
-                  <strong>{userInfo.name}</strong>
-                  <br />
-                  {userInfo.email}
-                </Dropdown.ItemText>
-                <Dropdown.Divider />
-                <Dropdown.Item onClick={Logout}>Logout</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-          )}
-        </Nav>
-      </Navbar.Collapse>
+      </Container>
     </Navbar>
   );
 }

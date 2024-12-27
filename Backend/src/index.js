@@ -11,10 +11,6 @@ app.use("/auth", authRouter);
 app.use("/admin", isAdmin, adminRouter);
 app.use("/compiler", isUser, compilerRouter);
 
-app.get("/hi", (req, res) => {
-  res.send("Hello World");
-})
-
 app.listen(port, () => {
   console.log(`My Server running on port ${port}`)
   connectDB();
