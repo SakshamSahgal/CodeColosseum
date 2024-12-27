@@ -1,7 +1,7 @@
 const { google } = require('googleapis');
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
-const { captureAccount } = require("../controllers/CaptureAccount.js");
+const { captureAccount } = require("./captureAccount.js");
 
 const GoogleLogin = async (req, res) => {
     try {

@@ -6,6 +6,7 @@ import AdminConsole from './Pages/AdminConsole.js';
 import PrivateRoute from './Assets/PrivateRoute.js';
 import Submissions from './Pages/Submissions.js';
 import Submission from './Pages/Submission.js';
+import ProfilePage from './Pages/ProfilePage.js';
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
         <Route path='/adminConsole' element={<PrivateRoute element={<AdminConsole />} />} />
         <Route path='/submissions/:email' element={<PrivateRoute element={<Submissions />} />} />
         <Route path='/submission/:email/:submissionToken' element={<PrivateRoute element={<Submission />} />} />
+        <Route path='/profile/:email' element={<PrivateRoute element={<ProfilePage />} />} />
         <Route path='*' element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>
