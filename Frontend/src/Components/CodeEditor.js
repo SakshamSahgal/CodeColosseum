@@ -31,25 +31,27 @@ function CodeEditor() {
     };
 
     return (
-        <Container className='bg-light'>
+        <Container className='bg-light py-4 my-5 rounded shadow'>
             <Row>
                 <Col>
-                    <Card className="mt-3">
-                        <Card.Header className="bg-dark">
+                    <Card className="mt-3 shadow-sm rounded">
+                        <Card.Header className="bg-dark d-flex justify-content-between align-items-center border-0">
+                            <h5 className="mb-0 text-white">Code Editor</h5>
                             <LanguageDropdown languages={languages} selectedLanguageId={selectedLanguageId} setSelectedLanguageId={setSelectedLanguageId} />
                         </Card.Header>
-                            <CodeMirror
-                                value={sourceCode}
-                                height="500px"
-                                theme={theme === 'default' ? undefined : theme}
-                                onChange={(editor, data, value) => {
-                                    console.log(editor);
-                                    setSourceCode(editor);
-                                }}
-                            />
+                        
+                        <CodeMirror
+                            value={sourceCode}
+                            height="500px"
+                            theme={theme === 'default' ? undefined : theme}
+                            onChange={(editor, data, value) => {
+                                console.log(editor);
+                                setSourceCode(editor);
+                            }}
+                        />
 
                         <Card.Footer className='text-center bg-dark'>
-                                <ThemeFooter theme={theme} handleThemeChange={handleThemeChange} />
+                            <ThemeFooter theme={theme} handleThemeChange={handleThemeChange} />
                         </Card.Footer>
                     </Card>
 
