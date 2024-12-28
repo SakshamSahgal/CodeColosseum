@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { GoogleAuth } from './Assets/GoogleAuth';
+import HomePage from './Pages/HomePage.js';
 import Dashboard from './Pages/Dashboard.js';
 import PageNotFound from './Assets/PageNotFound';
 import AdminConsole from './Pages/AdminConsole.js';
@@ -14,7 +14,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<GoogleAuth />} />
+        <Route path="/" element={<HomePage />} />
         <Route path='/dashboard' element={<PrivateRoute element={<Dashboard />} />} />
         <Route path='/admin/console' element={<PrivateRoute element={<AdminConsole />} />} />
         <Route path='/admin/users' element={<PrivateRoute element={<UserActivity />} />} />

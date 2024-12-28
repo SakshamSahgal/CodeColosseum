@@ -1,6 +1,7 @@
 import { useGoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import axios from 'axios';
-
+import { Button } from 'react-bootstrap';
+import { FaGoogle } from 'react-icons/fa'; // Importing Google icon from react-icons
 
 function GoogleLogin() {
 
@@ -34,7 +35,24 @@ function GoogleLogin() {
         flow: 'auth-code',
     });
 
-    return (<button onClick={Login}>Login with Google</button>);
+    return (
+        <Button
+            onClick={Login}
+            variant="danger"
+            size="lg"
+            className="d-flex align-items-center justify-content-center px-4 py-2"
+            style={{
+                borderRadius: '50px',
+                fontSize: '1.1rem',
+                fontWeight: 'bold',
+                textTransform: 'uppercase',
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+            }}
+        >
+            <FaGoogle size={20} style={{ marginRight: '10px' }}  /> {/* Google Icon */}
+             Login with Google
+        </Button>
+    );
 }
 
 function GoogleAuth() {

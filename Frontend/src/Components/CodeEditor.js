@@ -1,10 +1,12 @@
 import CodeMirror from '@uiw/react-codemirror';
-import { Container, Row, Col, Dropdown, DropdownButton } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import makeApiRequest from '../Assets/Apis';
 import { useEffect, useState } from 'react';
 import SubmitCode from './SubmitCode';
 import StdinPallet from './StdinPallet';
 import { Card } from 'react-bootstrap';
+import LanguageDropdown from './CodeEditor/LanguageDropdown.js';
+import ThemeFooter from './CodeEditor/ThemeFooter.js';
 
 function CodeEditor() {
 
@@ -12,6 +14,7 @@ function CodeEditor() {
     const [selectedLanguageId, setSelectedLanguageId] = useState(2);
     const [sourceCode, setSourceCode] = useState(`#include <iostream>\n\nint main() {\n\tstd::cout << "Hello, World!" << std::endl;\n\treturn 0;\n}`);
     const [stdin, setStdin] = useState('');
+    const [theme, setTheme] = useState('default'); // Default theme
 
     useEffect(() => {
         makeApiRequest({
@@ -23,41 +26,30 @@ function CodeEditor() {
         });
     }, []);
 
+    const handleThemeChange = (newTheme) => {
+        setTheme(newTheme);
+    };
+
     return (
         <Container className='bg-light'>
             <Row>
                 <Col>
                     <Card className="mt-3">
-                        <Card.Header className="text-center bg-dark">
-                            {/*If not fetched yet, the default title will be "select language", else it will be the language with ID 2 */}
-                            {/*When something is selected, find that language ID from the name and update the selectedLanguageId */}
-                            <DropdownButton
-                                title={languages.find((lang) => lang.id === selectedLanguageId)?.name || "Select Language"}
-                                onSelect={(eventKey) => {
-                                    setSelectedLanguageId(languages.find((lang) => lang.name === eventKey).id);
-                                }}
-                            >
-                                {languages.map((lang) => (
-                                    <Dropdown.Item
-                                        key={lang.id}
-                                        eventKey={lang.name}
-                                    >
-                                        {lang.name}
-                                    </Dropdown.Item>
-                                ))}
-                            </DropdownButton>
+                        <Card.Header className="bg-dark">
+                            <LanguageDropdown languages={languages} selectedLanguageId={selectedLanguageId} setSelectedLanguageId={setSelectedLanguageId} />
                         </Card.Header>
-                        <Card.Body>
                             <CodeMirror
                                 value={sourceCode}
                                 height="500px"
+                                theme={theme === 'default' ? undefined : theme}
                                 onChange={(editor, data, value) => {
                                     console.log(editor);
                                     setSourceCode(editor);
                                 }}
                             />
-                        </Card.Body>
+
                         <Card.Footer className='text-center bg-dark'>
+                                <ThemeFooter theme={theme} handleThemeChange={handleThemeChange} />
                         </Card.Footer>
                     </Card>
 
@@ -68,7 +60,7 @@ function CodeEditor() {
             </Row>
             <Row>
                 <Col>
-                    <SubmitCode selectedLanguageId={selectedLanguageId} sourceCode={sourceCode} stdin={stdin}/>
+                    <SubmitCode selectedLanguageId={selectedLanguageId} sourceCode={sourceCode} stdin={stdin} />
                 </Col>
             </Row>
         </Container>
