@@ -5,8 +5,6 @@ import { FaUserCircle } from "react-icons/fa";
 function UserProfilePallet({ user }) {
 
     const [imageError, setImageError] = useState(false); // State to handle image errors
-    console.log(user);
-    ///check if user is null
 
     if (user === null) {
         return (

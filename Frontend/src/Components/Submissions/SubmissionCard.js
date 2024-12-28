@@ -1,5 +1,5 @@
 
-import formatTimeElapsed from "../Assets/Utils.js";
+import formatTimeElapsed from "../../Assets/Utils.js";
 import { Card } from "react-bootstrap";
 
 function SubmissionCard({ submission }) {

@@ -3,6 +3,9 @@ import CodeMirror from '@uiw/react-codemirror';
 import { Accordion, Card } from 'react-bootstrap';
 
 function CompilerOutputPallet({ compile_output }) {
+    if (!compile_output) {
+        return null;
+    }
     return (
         <Accordion className='mt-3' defaultActiveKey={compile_output ? "0" : "1"}>
             <Accordion.Item eventKey="0">

@@ -28,8 +28,10 @@ function ProfileDropdown({ userInfo }) {
                 align="end"
                 className="ms-auto" // Ensures it's aligned to the right
             >
-                <NavDropdown.Item>Name : <strong>{userInfo.name}</strong></NavDropdown.Item>
-                <NavDropdown.Item>Email : {userInfo.email}</NavDropdown.Item>
+                <NavDropdown.Item onClick={() => window.location.href = `/profile/${userInfo.email}`}>
+                    Name : <strong>{userInfo.name}</strong> <br />
+                    Email : {userInfo.email}
+                </NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item onClick={Logout}>
                     Logout

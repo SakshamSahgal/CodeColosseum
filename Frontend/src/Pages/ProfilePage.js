@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import makeApiRequest from "../Assets/Apis";
 import { useParams } from "react-router-dom";
-import { Container } from "react-bootstrap";
+import { Button, Col, Container, Row } from "react-bootstrap";
 import SimpleNavbar from "../Components/Navbar";
 import UserProfilePallet from "./UserProfilePallet";
 
@@ -29,10 +29,16 @@ function ProfilePage() {
         <>
             <SimpleNavbar />
             <Container className="d-flex justify-content-center align-items-center" style={{ height: "100vh" }}>
-                <UserProfilePallet user={user} />
+                <div style={{ width: "24rem" }} className="text-center">
+                    <UserProfilePallet user={user} />
+                    <Button href={`/submissions/${email}`} variant="dark" className="mt-3" style={{ width: "100%" }}>
+                        View Submissions
+                    </Button>
+                </div>
             </Container>
         </>
     );
+
 }
 
 export default ProfilePage;

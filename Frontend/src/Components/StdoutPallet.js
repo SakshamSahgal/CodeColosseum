@@ -3,6 +3,9 @@ import { Card, Accordion } from 'react-bootstrap';
 import CodeMirror from '@uiw/react-codemirror';
 
 function StdoutPallet({ stdout }) {
+    if (!stdout) {
+        return null;
+    }
     return (
         <Accordion defaultActiveKey={stdout ? "0" : "1"} className='mt-3'>
             <Accordion.Item eventKey="0">
