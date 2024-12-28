@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import makeApiRequest from "../Assets/Apis";
 import { useParams } from "react-router-dom";
-import { Button, Col, Container, Row } from "react-bootstrap";
+import { Button, Container } from "react-bootstrap";
 import SimpleNavbar from "../Components/Navbar";
 import UserProfilePallet from "./UserProfilePallet";
 

@@ -1,6 +1,6 @@
 import { Container, Form, Pagination } from "react-bootstrap";
 
-function SubmissionsPagenation({ maxEntriesPerPage, handleEntriesChange, renderPagination }) {
+function PagenationFooter({ maxEntriesPerPage, handleEntriesChange, renderPagination }) {
     return (
         <div
             className="fixed-bottom bg-dark text-light py-3"
@@ -27,4 +27,4 @@ function SubmissionsPagenation({ maxEntriesPerPage, handleEntriesChange, renderP
     )
 }
 
-export default SubmissionsPagenation;
+export default PagenationFooter;

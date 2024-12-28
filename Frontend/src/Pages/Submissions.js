@@ -4,7 +4,7 @@ import { useParams } from "react-router";
 import { Pagination } from "react-bootstrap";
 import SimpleNavbar from "../Components/Navbar.js";
 import SubmissionsContainer from "../Components/Submissions/SubmissionsContainer.js";
-import SubmissionsPagenation from "../Components/Submissions/SubmissionsPagenation.js";
+import PagenationFooter from "../Components/Submissions/PagenationFooter.js";
 
 function Submissions() {
   const { email } = useParams();
@@ -62,7 +62,7 @@ function Submissions() {
     <>
       <SimpleNavbar />
       <SubmissionsContainer submissions={submissions} totalEntries={totalEntries} />
-      <SubmissionsPagenation maxEntriesPerPage={maxEntriesPerPage} handleEntriesChange={handleEntriesChange} renderPagination={renderPagination} />
+      <PagenationFooter maxEntriesPerPage={maxEntriesPerPage} handleEntriesChange={handleEntriesChange} renderPagination={renderPagination} />
     </>
   );
 }

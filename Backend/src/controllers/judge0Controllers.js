@@ -148,11 +148,10 @@ async function fetchSubmissions(req, res) {
             email: req.params.email,
         };
 
-        let maxEntriesPerPage = req.params.maxEntriesPerPage ? parseInt(req.params.maxEntriesPerPage) : 10; //Setting the maximum number of entries per page
+        let maxEntriesPerPage = Math.max(Math.min(Number(req.params.maxEntriesPerPage), 100), 1) //Clamping the maxEntriesPerPage between 1 and 100
         let NoOfEntries = await countDocuments("Main", "Submissions", query) //Counting the number of entries in the database that match the query
         let TotalPages = Math.ceil(NoOfEntries / parseInt(maxEntriesPerPage)); //Calculating the total number of pages
-        let passedPageNumber = req.params.pageNumber ? parseInt(req.params.pageNumber) : 1; //Getting the page number from the request
-        var curPage = Math.max(Math.min(Number(passedPageNumber), TotalPages), 1) //Clamping the page number between 1 and TotalPages
+        var curPage = Math.max(Math.min(Number(parseInt(req.params.pageNumber)), TotalPages), 1) //Clamping the page number between 1 and TotalPages
         const entriesToSkip = (parseInt(curPage) - 1) * parseInt(maxEntriesPerPage);    // calculate the number of entries to skip
 
         console.log("TotalPages: ", TotalPages);

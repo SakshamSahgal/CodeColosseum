@@ -24,7 +24,7 @@ function Submission() {
         setLoading(false);
       },
     });
-  }, [submissionToken]);
+  }, [submissionToken, email]);
 
   if (loading) {
     return (
