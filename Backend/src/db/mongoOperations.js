@@ -1,6 +1,6 @@
 const { MongoClient, ServerApiVersion } = require('mongodb'); //including the mongoDB package
 
-let mongoURI = 'mongodb+srv://' + (process.env.DBUsername) + ':' + (process.env.DBPassword) + '@' + (process.env.ClusterAddress) + '/'; //URI for the MongoDB database
+let mongoURI = 'mongodb+srv://' + (process.env.DB_USERNAME) + ':' + (process.env.DB_PASSWORD) + '@' + (process.env.CLUSTER_ADDRESS) + '/'; //URI for the MongoDB database
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(mongoURI, {
