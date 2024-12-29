@@ -1,9 +1,12 @@
 const { readDB } = require("../db/mongoOperations.js");
+const { updateLog } = require("../controllers/userInteration.js");
 
 async function getProfile(req, res) {
-    console.log("Profile Controller");
+
     const email = req.params.email;
     console.log(email);
+    updateLog(req,`accessed profile of ${email}`);
+
     const result = await readDB("Main", "Users", { email: email }, { _id: 0 });
     console.log(result);
     if (result.length === 0) {

@@ -1,7 +1,7 @@
 const axios = require('axios');
 const { writeDB, readDB, skipRead, countDocuments } = require('../db/mongoOperations');
 const jwt = require('jsonwebtoken');
-
+const { updateLog } = require('../controllers/userInteration');
 
 //create an axios instance
 const instance = axios.create({
@@ -70,6 +70,9 @@ function createSubmission(req, res) {
         // save: req.body.save
     };
     console.log(data);
+
+    updateLog(req, `Created a new submission`);
+
     instance.post("/submissions/?base64_encoded=false&wait=false", data).then((response) => {
 
         // decoding the JWT token to get the email of the requester
@@ -92,8 +95,10 @@ function createSubmission(req, res) {
 function fetchSubmission(req, res) {
     const email = req.params.email;
     const submissionToken = req.params.submissionToken;
-    console.log(email);
-    console.log(submissionToken);
+    // console.log(email);
+    // console.log(submissionToken);
+
+    updateLog(req, `Fetched submission for ${email}`);
 
     instance.get(`/submissions/${submissionToken}`).then((response) => {
         let submissionData = response.data;
@@ -119,6 +124,9 @@ async function fetchSubmissions(req, res) {
     console.log(req.params.email);
     console.log(req.params.maxEntriesPerPage);
     console.log(req.params.pageNumber);
+
+    updateLog(req, `Fetched submissions for ${req.params.email}`);
+
 
     if (!req.params.email) {
         res.status(400).json({ message: "Email is required" });

@@ -1,30 +1,30 @@
-import { useState, useEffect } from 'react';
+import { useParams } from "react-router";
+import { useEffect, useState } from "react";
 import makeApiRequest from "../Assets/Apis";
-import PagenationFooter from '../Components/Submissions/PagenationFooter';
-import { Pagination, Row, Col, Container } from 'react-bootstrap';
-import UserProfilePallet from './UserProfilePallet';
+import PagenationFooter from "../Components/Submissions/PagenationFooter";
+import { Container, Pagination } from "react-bootstrap";
+import UserLogs from "../Components/UserLogs";
 
 function UserActivity() {
-    const [users, setUsers] = useState({});
+    const { email } = useParams();
     const [maxEntriesPerPage, setMaxEntriesPerPage] = useState(5); // Default entries per page
     const [currentPage, setCurrentPage] = useState(1);
+    const [activityData, setActivityData] = useState(null);
     const [totalPages, setTotalPages] = useState(1);
     const [totalEntries, setTotalEntries] = useState(0);
 
     useEffect(() => {
+        console.log(email);
         makeApiRequest({
-            url: `/admin/users/${maxEntriesPerPage}/${currentPage}`,
-            method: "GET",
+            url: `admin/user/activity/${email}/${maxEntriesPerPage}/${currentPage}`, // This is the updated code
+            method: 'GET', // This is the updated code
             onSuccess: (data) => {
-                setUsers(data.users);
+                setActivityData(data.userLogs);
                 setTotalPages(data.totalPages);
                 setTotalEntries(data.totalEntries);
-            },
-            onError: (error) => {
-                setUsers(null);
             }
         });
-    }, [ currentPage, maxEntriesPerPage]);
+    }, [email, currentPage, maxEntriesPerPage]);
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
@@ -53,29 +53,11 @@ function UserActivity() {
     };
 
     return (
-        <div>
-            <div>
-                <h1 className="my-4 text-center">User Activity ({totalEntries ? totalEntries : 0} Users Total)</h1>
-                <Container>
-                    <Row>
-                        {users && users.length > 0 ? (
-                            users.map(user => (
-                                <Col key={user._id} className="mb-4">
-                                    <UserProfilePallet user={user} />
-                                </Col>
-                            ))
-                        ) : (
-                            <p>No users found.</p>
-                        )}
-                    </Row>
-                </Container>
-                <PagenationFooter
-                    maxEntriesPerPage={maxEntriesPerPage}
-                    handleEntriesChange={handleEntriesChange}
-                    renderPagination={renderPagination}
-                />
-            </div>
-        </div>
+    <>
+        <h1>User Activity (Total Logs : {totalEntries})</h1>
+        <UserLogs activityData={activityData} />
+        <PagenationFooter maxEntriesPerPage={maxEntriesPerPage} handleEntriesChange={handleEntriesChange} renderPagination={renderPagination} />
+    </>
     );
 }
 
