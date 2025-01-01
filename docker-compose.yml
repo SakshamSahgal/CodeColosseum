@@ -1,31 +1,13 @@
-x-logging:
-  &default-logging
+x-logging: &default-logging
   logging:
     driver: json-file
     options:
       max-size: 100M
 
 services:
-  nginx:
+
+  codecolosseum:
     build:
-      context: ./proxy
-      dockerfile: Dockerfile
-    container_name: proxy
-    ports:
-      - "80:80" # Expose port 80 to the host
-    depends_on: # ensure that every other service is up before starting the proxy
-     - frontend
-     - backend
-     - server
-     - workers
-     - db
-     - redis
-    networks:
-      - app-network
-  backend:
-    build:
-      context: ./Backend
-      dockerfile: Dockerfile
       args:
         BACKEND_PORT: ${BACKEND_PORT}
         CORS_ORIGIN: ${CORS_ORIGIN}
@@ -38,49 +20,32 @@ services:
         DB_USERNAME: ${DB_USERNAME}
         DB_PASSWORD: ${DB_PASSWORD}
         CLUSTER_ADDRESS: ${CLUSTER_ADDRESS}
-    expose:
-      - "${BACKEND_PORT}" # only expose the port BACKEND_PORT to app-network (not to the host)
+        DOMAIN: ${DOMAIN}
+      dockerfile: Dockerfile
     environment:
       - BACKEND_PORT=${BACKEND_PORT}
       - CORS_ORIGIN=${CORS_ORIGIN}
-      - OAUTH_CLIENT_ID=${OAUTH_CLIENT_ID}
+      - OAUTH_CLIENT_ID=${OAUTH_CLIENT_ID} # Set the OAUTH_CLIENT_ID for Backend
       - OAUTH_CLIENT_SECRET=${OAUTH_CLIENT_SECRET}
       - JWT_TOKEN_TIMEOUT=${JWT_TOKEN_TIMEOUT}
       - JWT_SECRET=${JWT_SECRET}
       - ADMIN_EMAIL=${ADMIN_EMAIL}
-      - JUDGE0_URL=${JUDGE0_URL}
+      - JUDGE0_URL=${JUDGE0_URL} # URL used by the Backend to make requests to Judge0
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
       - CLUSTER_ADDRESS=${CLUSTER_ADDRESS}
+      - REACT_APP_OAUTH_CLIENT_ID=${OAUTH_CLIENT_ID} # Set the OAUTH_CLIENT_ID for Frontend
+      - REACT_APP_BASE_URL=${DOMAIN} # BASE URL used by the React app/Host to make requests to the backend
+    ports:
+      - "80:${BACKEND_PORT}" # map the port BACKEND_PORT to port 80 on the host
     networks:
       - app-network
-  frontend:
-    build:
-      context: ./Frontend
-      dockerfile: Dockerfile
-      args:
-        FRONTEND_PORT: ${FRONTEND_PORT}
-        OAUTH_CLIENT_ID: ${OAUTH_CLIENT_ID}
-        BACKEND_PORT: ${BACKEND_PORT}
-        DOMAIN: ${DOMAIN}
-    expose:
-      - "${FRONTEND_PORT}" # only expose the port FRONTEND_PORT to app-network (not to the host)
-    environment:
-      - PORT=${FRONTEND_PORT} # Set the PORT environment variable to the FRONTEND_PORT value so that the React app listens on FRONTEND_PORT
-      - REACT_APP_OAUTH_CLIENT_ID=${OAUTH_CLIENT_ID}
-      - REACT_APP_BASE_URL=${DOMAIN}/api
-    networks:
-      - app-network
+
   # Judge0 services
   server:
-    image: judge0/judge0:1.13.1-extra
-    depends_on:
-      db:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
+    image: judge0/judge0:1.13.1
     volumes:
-      - ./judge0.conf:/judge0.conf:ro # Mount your judge0.conf file
+      - ./judge0.conf:/judge0.conf:ro
     expose:
       - "2358" # only expose the port 2358 to app-network (not to the host)
     privileged: true
@@ -88,54 +53,54 @@ services:
     restart: always
     networks:
       - app-network
-  workers:
-    image: judge0/judge0:1.13.1-extra
     depends_on:
       db:
         condition: service_healthy
       redis:
         condition: service_healthy
-    command: ["./scripts/workers"]
+        
+  workers:
+    image: judge0/judge0:1.13.1
+    command: [ "./scripts/workers" ]
     volumes:
-      - ./judge0.conf:/judge0.conf:ro # Mount your judge0.conf file
+      - ./judge0.conf:/judge0.conf:ro
     privileged: true
     <<: *default-logging
     restart: always
     networks:
       - app-network
+
   db:
     image: postgres:16.2
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
-      timeout: 5s
-      retries: 3
-    env_file: ./judge0.conf
+    env_file: judge0.conf
     volumes:
-      - judge0-data:/var/lib/postgresql/data/
+      - data:/var/lib/postgresql/data/
     <<: *default-logging
     restart: always
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   redis:
     image: redis:7.2.4
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 5s
-      timeout: 3s
-      retries: 3
-    command: [
-      "bash", "-c",
-      'docker-entrypoint.sh --appendonly no --requirepass "$$REDIS_PASSWORD"'
-    ]
-    env_file: ./judge0.conf
+    command: [ "bash", "-c", 'docker-entrypoint.sh --appendonly no --requirepass "$$REDIS_PASSWORD"' ]
+    env_file: judge0.conf
     <<: *default-logging
     restart: always
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "$REDIS_PASSWORD", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
-  judge0-data:
+  data:
+
 
 networks:
   app-network:

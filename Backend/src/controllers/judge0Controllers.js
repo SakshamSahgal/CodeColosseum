@@ -88,6 +88,8 @@ function createSubmission(req, res) {
 
         res.status(200).json(response.data);
     }).catch((error) => {
+        console.log("Error in createSubmission: ");
+        console.log(error);
         res.status(500).json(error);
     });
 }

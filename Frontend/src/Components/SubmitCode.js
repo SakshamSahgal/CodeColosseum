@@ -5,6 +5,10 @@ function SubmitCode({ selectedLanguageId, sourceCode, stdin }) {
 
     const createSubmission = () => {
         console.log(selectedLanguageId, sourceCode, stdin);
+        if(!selectedLanguageId || !sourceCode || selectedLanguageId) {
+            alert('Please select a language and write some code before submitting');
+            return;
+        }
         makeApiRequest({
             url: '/compiler/createSubmission',
             method: 'POST',
