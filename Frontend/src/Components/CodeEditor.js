@@ -11,7 +11,7 @@ import ThemeFooter from './CodeEditor/ThemeFooter.js';
 function CodeEditor() {
 
     const [languages, setLanguages] = useState([]);
-    const [selectedLanguageId, setSelectedLanguageId] = useState(2);
+    const [selectedLanguageId, setSelectedLanguageId] = useState(-1);
     const [sourceCode, setSourceCode] = useState(`#include <iostream>\n\nint main() {\n\tstd::cout << "Hello, World!" << std::endl;\n\treturn 0;\n}`);
     const [stdin, setStdin] = useState('');
     const [theme, setTheme] = useState('default'); // Default theme

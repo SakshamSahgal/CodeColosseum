@@ -5,8 +5,8 @@ function SubmitCode({ selectedLanguageId, sourceCode, stdin }) {
 
     const createSubmission = () => {
         console.log(selectedLanguageId, sourceCode, stdin);
-        if(!selectedLanguageId || !sourceCode || selectedLanguageId) {
-            alert('Please select a language and write some code before submitting');
+        if(selectedLanguageId === -1 || sourceCode === '' || sourceCode === null) {
+            alert('Choose your language and script your code, then cast it into the depths of the voids.');
             return;
         }
         makeApiRequest({

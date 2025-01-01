@@ -1,12 +1,27 @@
+import { useEffect, useState } from 'react';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 
+//if not yet fetched, the default title will be "Select Language", and selectedLanguageId will be -1 corresponding to the default language
 
-function LanguageDropdown({ languages = [], selectedLanguageId, setSelectedLanguageId }) {
-    {/*If not fetched yet, the default title will be "select language", else it will be the language with ID 2 */ }
+function LanguageDropdown({ languages = [], selectedLanguageId = -1, setSelectedLanguageId }) {
+
+    const [LanguageSelected, setLanguageSelected] = useState("Select Language");
+    useEffect(() => {
+        if (languages.length > 0) {
+            console.log(languages);
+            let selectedLang = languages.find((lang) => lang.id === selectedLanguageId);
+            if (selectedLang) {
+                setLanguageSelected(selectedLang.name);
+            } else {
+                setLanguageSelected("Select Language");
+            }
+        }
+    }, [languages, selectedLanguageId]);
+
     {/*When something is selected, find that language ID from the name and update the selectedLanguageId */ }
     return (
         <DropdownButton
-            title={languages.find((lang) => lang.id === selectedLanguageId)?.name || "Select Language"}
+            title={LanguageSelected}
             onSelect={(eventKey) => {
                 setSelectedLanguageId(languages.find((lang) => lang.name === eventKey).id);
             }}
