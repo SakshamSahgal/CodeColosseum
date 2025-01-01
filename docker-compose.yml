@@ -62,12 +62,13 @@ services:
         FRONTEND_PORT: ${FRONTEND_PORT}
         OAUTH_CLIENT_ID: ${OAUTH_CLIENT_ID}
         BACKEND_PORT: ${BACKEND_PORT}
+        DOMAIN: ${DOMAIN}
     expose:
       - "${FRONTEND_PORT}" # only expose the port FRONTEND_PORT to app-network (not to the host)
     environment:
       - PORT=${FRONTEND_PORT} # Set the PORT environment variable to the FRONTEND_PORT value so that the React app listens on FRONTEND_PORT
       - REACT_APP_OAUTH_CLIENT_ID=${OAUTH_CLIENT_ID}
-      - REACT_APP_BASE_URL=http://localhost/api
+      - REACT_APP_BASE_URL=${DOMAIN}/api
     networks:
       - app-network
   # Judge0 services
