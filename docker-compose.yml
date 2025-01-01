@@ -58,7 +58,7 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-        
+
   workers:
     image: judge0/judge0:1.13.1
     command: [ "./scripts/workers" ]
@@ -84,6 +84,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+  
   redis:
     image: redis:7.2.4
     command: [ "bash", "-c", 'docker-entrypoint.sh --appendonly no --requirepass "$$REDIS_PASSWORD"' ]

@@ -18,14 +18,14 @@ app.listen(port, () => {
   connectDB();
 })
 
-app.use("/auth", authRouter);
-app.use("/admin", isAdmin, updateActivity, adminRouter);
-app.use("/compiler", isUser, updateActivity, compilerRouter);
-app.use("/user", isUser, updateActivity, profileRouter);
-app.use("/placeholder", isUser, updateActivity, placeHolderRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/admin", isAdmin, updateActivity, adminRouter);
+app.use("/api/compiler", isUser, updateActivity, compilerRouter);
+app.use("/api/user", isUser, updateActivity, profileRouter);
+app.use("/api/placeholder", isUser, updateActivity, placeHolderRouter);
 
 
-app.get("/health", (req, res) => {
+app.get("/api/health", (req, res) => {
   res.status(200).send("Health OK");
 })
 
