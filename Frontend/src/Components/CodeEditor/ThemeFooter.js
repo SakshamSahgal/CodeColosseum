@@ -9,7 +9,7 @@ import { githubDark } from '@uiw/codemirror-theme-github'; // GitHub theme
 
 
 function ThemeFooter({ theme, handleThemeChange }) {
-    return (<ButtonGroup>
+    return (<ButtonGroup className="d-flex flex-wrap justify-content-start">
         <Button
             variant={theme === 'default' ? 'primary' : 'secondary'}
             onClick={() => handleThemeChange('default')}

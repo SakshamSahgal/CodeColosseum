@@ -5,6 +5,7 @@ const authRouter = require("./routes/authRouter.js");
 const adminRouter = require("./routes/adminRouter.js");
 const compilerRouter = require("./routes/compilerRouter.js");
 const profileRouter = require("./routes/profileRouter.js");
+const placeHolderRouter = require("./routes/placeHolder.js");
 const path = require('path');
 
 const { isAdmin, isUser } = require("./middlewares/TokenValidation.js");
@@ -21,6 +22,8 @@ app.use("/auth", authRouter);
 app.use("/admin", isAdmin, updateActivity, adminRouter);
 app.use("/compiler", isUser, updateActivity, compilerRouter);
 app.use("/user", isUser, updateActivity, profileRouter);
+app.use("/placeholder", isUser, updateActivity, placeHolderRouter);
+
 
 app.get("/health", (req, res) => {
   res.status(200).send("Health OK");
