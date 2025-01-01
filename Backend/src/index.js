@@ -15,6 +15,10 @@ app.use("/admin", isAdmin, updateActivity, adminRouter);
 app.use("/compiler", isUser, updateActivity, compilerRouter);
 app.use("/user", isUser, updateActivity, profileRouter);
 
+app.get("/health", (req, res) => {
+  res.status(200).send("Health OK");
+})
+
 app.listen(port, () => {
   console.log(`My Server running on port ${port}`)
   connectDB();

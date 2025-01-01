@@ -6,6 +6,22 @@ x-logging:
       max-size: 100M
 
 services:
+  nginx:
+    build:
+      context: ./proxy
+      dockerfile: Dockerfile
+    container_name: proxy
+    ports:
+      - "80:80" # Expose port 80 to the host
+    depends_on: # ensure that every other service is up before starting the proxy
+     - frontend
+     - backend
+     - server
+     - workers
+     - db
+     - redis
+    networks:
+      - app-network
   backend:
     build:
       context: ./Backend
@@ -22,10 +38,8 @@ services:
         DB_USERNAME: ${DB_USERNAME}
         DB_PASSWORD: ${DB_PASSWORD}
         CLUSTER_ADDRESS: ${CLUSTER_ADDRESS}
-    ports:
-      - "${BACKEND_PORT}:${BACKEND_PORT}"
-    volumes:
-      - ./Backend:/app # Mount the local Backend directory to /app in the container
+    expose:
+      - "${BACKEND_PORT}" # only expose the port BACKEND_PORT to app-network (not to the host)
     environment:
       - BACKEND_PORT=${BACKEND_PORT}
       - CORS_ORIGIN=${CORS_ORIGIN}
@@ -48,14 +62,12 @@ services:
         FRONTEND_PORT: ${FRONTEND_PORT}
         OAUTH_CLIENT_ID: ${OAUTH_CLIENT_ID}
         BACKEND_PORT: ${BACKEND_PORT}
-    ports:
-      - "${FRONTEND_PORT}:${FRONTEND_PORT}" # map the Host's FRONTEND_PORT to the container's FRONTEND_PORT port
+    expose:
+      - "${FRONTEND_PORT}" # only expose the port FRONTEND_PORT to app-network (not to the host)
     environment:
       - PORT=${FRONTEND_PORT} # Set the PORT environment variable to the FRONTEND_PORT value so that the React app listens on FRONTEND_PORT
       - REACT_APP_OAUTH_CLIENT_ID=${OAUTH_CLIENT_ID}
-      - REACT_APP_BASE_URL=http://localhost:${BACKEND_PORT}
-    volumes:
-      - ./Frontend:/app # Mount the local Frontend directory to /app in the container
+      - REACT_APP_BASE_URL=http://localhost/api
     networks:
       - app-network
   # Judge0 services
@@ -67,9 +79,9 @@ services:
       redis:
         condition: service_healthy
     volumes:
-      - ./judge0.conf:/judge0.conf:ro
-    ports:
-      - "2358:2358"
+      - ./judge0.conf:/judge0.conf:ro # Mount your judge0.conf file
+    expose:
+      - "2358" # only expose the port 2358 to app-network (not to the host)
     privileged: true
     <<: *default-logging
     restart: always
@@ -84,7 +96,7 @@ services:
         condition: service_healthy
     command: ["./scripts/workers"]
     volumes:
-      - ./judge0.conf:/judge0.conf:ro
+      - ./judge0.conf:/judge0.conf:ro # Mount your judge0.conf file
     privileged: true
     <<: *default-logging
     restart: always

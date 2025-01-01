@@ -2,7 +2,7 @@ import { useParams } from "react-router";
 import { useEffect, useState } from "react";
 import makeApiRequest from "../Assets/Apis";
 import PagenationFooter from "../Components/Submissions/PagenationFooter";
-import { Container, Pagination } from "react-bootstrap";
+import { Pagination } from "react-bootstrap";
 import UserLogs from "../Components/UserLogs";
 
 function UserActivity() {
