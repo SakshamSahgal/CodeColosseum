@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import makeApiRequest from "../Assets/Apis";
 import PagenationFooter from '../Components/Submissions/PagenationFooter';
-import { Pagination, Row, Col, Container, Button } from 'react-bootstrap';
+import { Row, Col, Container, Button } from 'react-bootstrap';
 import UserProfilePallet from './UserProfilePallet';
 
 function Users() {
@@ -34,22 +34,6 @@ function Users() {
         const value = parseInt(event.target.value, 10);
         setMaxEntriesPerPage(value);
         setCurrentPage(1); // Reset to the first page when entries per page change
-    };
-
-    const renderPagination = () => {
-        let items = [];
-        for (let page = 1; page <= totalPages; page++) {
-            items.push(
-                <Pagination.Item
-                    key={page}
-                    active={page === currentPage}
-                    onClick={() => handlePageChange(page)}
-                >
-                    {page}
-                </Pagination.Item>
-            );
-        }
-        return items;
     };
 
     return (
