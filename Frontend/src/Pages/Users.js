@@ -3,6 +3,7 @@ import makeApiRequest from "../Assets/Apis";
 import PagenationFooter from '../Components/Submissions/PagenationFooter';
 import { Row, Col, Container, Button } from 'react-bootstrap';
 import UserProfilePallet from './UserProfilePallet';
+import AdminAccessOnly from '../Components/AdminAccessOnly.js';
 
 function Users() {
     const [users, setUsers] = useState({});
@@ -10,6 +11,7 @@ function Users() {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [totalEntries, setTotalEntries] = useState(0);
+    const [isAdmin, setIsAdmin] = useState(false);
 
     useEffect(() => {
         makeApiRequest({
@@ -19,9 +21,11 @@ function Users() {
                 setUsers(data.users);
                 setTotalPages(data.totalPages);
                 setTotalEntries(data.totalEntries);
+                setIsAdmin(true);
             },
             onError: (error) => {
                 setUsers(null);
+                setIsAdmin(false);
             }
         });
     }, [currentPage, maxEntriesPerPage]);
@@ -37,7 +41,7 @@ function Users() {
     };
 
     return (
-        <div>
+        isAdmin ? (
             <div>
                 <h1 className="my-4 text-center">User Activity ({totalEntries ? totalEntries : 0} Users Total)</h1>
                 <Container>
@@ -58,9 +62,17 @@ function Users() {
                         )}
                     </Row>
                 </Container>
-                <PagenationFooter maxEntriesPerPage={maxEntriesPerPage} handleEntriesChange={handleEntriesChange} currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
+                <PagenationFooter
+                    maxEntriesPerPage={maxEntriesPerPage}
+                    handleEntriesChange={handleEntriesChange}
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    handlePageChange={handlePageChange}
+                />
             </div>
-        </div>
+        ) : (
+            <AdminAccessOnly />
+        )
     );
 }
 

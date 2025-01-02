@@ -4,6 +4,7 @@ import makeApiRequest from "../Assets/Apis";
 import PagenationFooter from "../Components/Submissions/PagenationFooter";
 import UserLogs from "../Components/UserLogs";
 import { Container, Row, Col, Card } from 'react-bootstrap';
+import AdminAccessOnly from '../Components/AdminAccessOnly';
 
 function UserActivity() {
     const { email } = useParams();
@@ -12,15 +13,20 @@ function UserActivity() {
     const [activityData, setActivityData] = useState(null);
     const [totalPages, setTotalPages] = useState(1);
     const [totalEntries, setTotalEntries] = useState(0);
+    const [isAdmin, setIsAdmin] = useState(false);
 
     useEffect(() => {
         makeApiRequest({
             url: `admin/user/activity/${email}/${maxEntriesPerPage}/${currentPage}`,
             method: 'GET',
             onSuccess: (data) => {
+                setIsAdmin(true);
                 setActivityData(data.userLogs);
                 setTotalPages(data.totalPages);
                 setTotalEntries(data.totalEntries);
+            },
+            onError: (error) => {
+                setIsAdmin(false);
             }
         });
     }, [email, currentPage, maxEntriesPerPage]);
@@ -35,8 +41,8 @@ function UserActivity() {
         setCurrentPage(1); // Reset to the first page when entries per page change
     };
 
-    return (
-        <Container className="mt-5">
+    return (isAdmin ? (
+        <Container className="mt-5" >
             <Row className="mb-4">
                 <Col>
                     <h1>User Activity (Total Logs: {totalEntries})</h1>
@@ -59,6 +65,10 @@ function UserActivity() {
                 handlePageChange={handlePageChange}
             />
         </Container>
+    ) : (
+        <AdminAccessOnly />
+    )
+
     );
 }
 

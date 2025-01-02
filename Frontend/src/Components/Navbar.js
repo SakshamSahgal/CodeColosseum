@@ -13,15 +13,18 @@ function SimpleNavbar() {
   }, []);
 
   return (
-    <Navbar bg="dark" data-bs-theme="dark">
+    <Navbar bg="dark" variant="dark" expand="lg" data-bs-theme="dark">
       <Container>
         <Navbar.Brand href="/dashboard">CC</Navbar.Brand>
-        <Nav className="me-auto">
-          <Nav.Link href="/dashboard">Dashboard</Nav.Link>
-          <Nav.Link href={`/submissions/${userInfo?.email}`}>Submissions</Nav.Link>
-          <Nav.Link href={`/about`}>About</Nav.Link>
-        </Nav>
-        {userInfo && (<ProfileDropdown userInfo={userInfo} />)}
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse>
+          <Nav className="me-auto">
+            <Nav.Link href="/dashboard">Dashboard</Nav.Link>
+            <Nav.Link href={`/submissions/${userInfo?.email}`}>Submissions</Nav.Link>
+            <Nav.Link href="/about">About</Nav.Link>
+          </Nav>
+          {userInfo && <ProfileDropdown userInfo={userInfo} />}
+        </Navbar.Collapse>
       </Container>
     </Navbar>
   );

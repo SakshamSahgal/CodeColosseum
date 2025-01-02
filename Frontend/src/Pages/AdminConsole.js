@@ -4,11 +4,13 @@ import { Tab } from 'react-bootstrap';
 import { Nav } from 'react-bootstrap';
 import AdminTab from '../Assets/AdminTab';
 import makeApiRequest from '../Assets/Apis';
+import AdminAccessOnly from '../Components/AdminAccessOnly.js';
 
 function AdminConsole() {
 
   const [activeKey, setActiveKey] = useState("systemInfo");
   const [data, setData] = useState("Loading...");
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     handleSelect(activeKey);
@@ -23,11 +25,15 @@ function AdminConsole() {
       url: `/admin/${eventKey}`,
       onSuccess: (data) => {
         setData(data);
+        setIsAdmin(true);
+      },
+      onError: (error) => {
+        setIsAdmin(false);
       }
     });
   };
 
-  return (
+  return (isAdmin ? (
     <div>
       <SimpleNavbar />
       <Tab.Container defaultActiveKey={activeKey} onSelect={handleSelect}>
@@ -53,7 +59,8 @@ function AdminConsole() {
         </Tab.Content>
       </Tab.Container>
     </div >
-  );
+  ) : (<AdminAccessOnly />));
+
 }
 
 export default AdminConsole;

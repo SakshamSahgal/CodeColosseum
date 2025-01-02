@@ -7,46 +7,59 @@ import { okaidia } from '@uiw/codemirror-theme-okaidia';
 import { githubLight } from '@uiw/codemirror-theme-github'; // GitHub theme
 import { githubDark } from '@uiw/codemirror-theme-github'; // GitHub theme
 
-
 function ThemeFooter({ theme, handleThemeChange }) {
-    return (<ButtonGroup className="d-flex flex-wrap justify-content-start">
-        <Button
-            variant={theme === 'default' ? 'primary' : 'secondary'}
-            onClick={() => handleThemeChange('default')}
-        >
-            Default
-        </Button>
-        <Button
-            variant={theme === abyss ? 'primary' : 'secondary'}
-            onClick={() => handleThemeChange(abyss)}
-        >
-            abyss
-        </Button>
-        <Button
-            variant={theme === dracula ? 'primary' : 'secondary'}
-            onClick={() => handleThemeChange(dracula)}
-        >
-            dracula
-        </Button>
-        <Button
-            variant={theme === okaidia ? 'primary' : 'secondary'}
-            onClick={() => handleThemeChange(okaidia)}
-        >
-            okaidia
-        </Button>
-        <Button
-            variant={theme === githubLight ? 'primary' : 'secondary'}
-            onClick={() => handleThemeChange(githubLight)}
-        >
-            githubLight
-        </Button>
-        <Button
-            variant={theme === githubDark ? 'primary' : 'secondary'}
-            onClick={() => handleThemeChange(githubDark)}
-        >
-            githubDark
-        </Button>
-    </ButtonGroup>)
+  return (
+    <div className="d-flex flex-wrap justify-content-center">
+      <Button
+        size="sm"
+        variant={theme === 'default' ? 'primary' : 'secondary'}
+        onClick={() => handleThemeChange('default')}
+        className="m-1"
+      >
+        Default
+      </Button>
+      <Button
+        size="sm"
+        variant={theme === abyss ? 'primary' : 'secondary'}
+        onClick={() => handleThemeChange(abyss)}
+        className="m-1"
+      >
+        abyss
+      </Button>
+      <Button
+        size="sm"
+        variant={theme === dracula ? 'primary' : 'secondary'}
+        onClick={() => handleThemeChange(dracula)}
+        className="m-1"
+      >
+        dracula
+      </Button>
+      <Button
+        size="sm"
+        variant={theme === okaidia ? 'primary' : 'secondary'}
+        onClick={() => handleThemeChange(okaidia)}
+        className="m-1"
+      >
+        okaidia
+      </Button>
+      <Button
+        size="sm"
+        variant={theme === githubLight ? 'primary' : 'secondary'}
+        onClick={() => handleThemeChange(githubLight)}
+        className="m-1"
+      >
+        githubLight
+      </Button>
+      <Button
+        size="sm"
+        variant={theme === githubDark ? 'primary' : 'secondary'}
+        onClick={() => handleThemeChange(githubDark)}
+        className="m-1"
+      >
+        githubDark
+      </Button>
+    </div>
+  );
 }
 
 export default ThemeFooter;
