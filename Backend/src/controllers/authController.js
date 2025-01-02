@@ -20,6 +20,8 @@ const GoogleLogin = async (req, res) => {
         const token = jwt.sign({ email, name, picture }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_TOKEN_TIMEOUT }); // create a token with the user info
 
         await captureAccount(email, name, picture); // call the captureAccount function to add the user to the database
+        
+        console.log(`Google Login Successful Token = `, token);
 
         res.status(200).json({
             message: "Google Login Successful",
