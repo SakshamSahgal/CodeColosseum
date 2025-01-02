@@ -8,7 +8,7 @@ function LanguageDropdown({ languages = [], selectedLanguageId = -1, setSelected
     const [LanguageSelected, setLanguageSelected] = useState("Select Language");
     useEffect(() => {
         if (languages.length > 0) {
-            console.log(languages);
+            // console.log(languages);
             let selectedLang = languages.find((lang) => lang.id === selectedLanguageId);
             if (selectedLang) {
                 setLanguageSelected(selectedLang.name);

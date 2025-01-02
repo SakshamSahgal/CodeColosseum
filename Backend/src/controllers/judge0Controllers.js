@@ -1,7 +1,8 @@
 const axios = require('axios');
-const { writeDB, readDB, skipRead, countDocuments } = require('../db/mongoOperations');
+const { writeDB, readDB, skipRead, countDocuments, updateDB } = require('../db/mongoOperations');
 const jwt = require('jsonwebtoken');
 const { updateLog } = require('../controllers/userInteration');
+const e = require('express');
 
 //create an axios instance
 const instance = axios.create({
@@ -81,6 +82,7 @@ function createSubmission(req, res) {
         writeDB("Main", "Submissions", {
             email: decodedToken.email,
             source_code: req.body.source_code,
+            stdin: req.body.stdin,
             language_id: req.body.language_id,
             token: response.data.token,
             created_at: Date.now(), // submission created at
@@ -94,32 +96,68 @@ function createSubmission(req, res) {
     });
 }
 
-function fetchSubmission(req, res) {
+async function fetchSubmission(req, res) {
+
     const email = req.params.email;
     const submissionToken = req.params.submissionToken;
-    // console.log(email);
-    // console.log(submissionToken);
 
     updateLog(req, `Fetched submission for ${email}`);
 
-    instance.get(`/submissions/${submissionToken}`).then((response) => {
-        let submissionData = response.data;
-        readDB("Main", "Submissions", {
-            email: email,
-            token: submissionToken,
-        }).then((result) => {
-            //create a new object with both the responses
-            response = { ...submissionData, ...result[0] };
-            res.status(200).json(response);
-        }).catch((error) => {
-            res.status(500).json(error);
-        });
-    }).catch((error) => {
-        res.status(500).json(error);
-    });
+    let isUpdated = await isSubmissionAlreadyUpdated(submissionToken, email);
+
+    if (isUpdated === null) {
+        console.log("Submission not found");
+        res.status(404).json({ message: "Submission not found" });
+    } else if (isUpdated === false) {
+        //if the submission is fetched first time, then update the submission with the result from the compiler
+        console.log("Submission not updated yet");
+        await UpdateSubmissionWithCompilerResult(submissionToken, email);
+        const updatedSubmission = await readDB("Main", "Submissions", { email: email, token: submissionToken });
+        res.status(200).json(updatedSubmission[0]);
+    }
+    else {
+        res.status(200).json(isUpdated);
+    }
 }
 
+async function isSubmissionAlreadyUpdated(submissionToken, email) {
+    try {
 
+        let dbResponse = await readDB("Main", "Submissions", {
+            email: email,
+            token: submissionToken,
+        });
+
+        if (dbResponse.length === 0) {
+            console.log("No submission found with the token");
+            return null;
+        }
+
+        if (dbResponse[0].stdout) {
+            console.log("Submission already updated");
+            return dbResponse[0];
+        }
+
+        return false;
+
+    } catch (error) {
+        console.log("Error in Reading DB for checking if submission is already updated");
+        console.log(error);
+        return null;
+    }
+}
+
+async function UpdateSubmissionWithCompilerResult(submissionToken, email) {
+
+    try {
+        const responsefromCompiler = await instance.get(`/submissions/${submissionToken}`);
+        const submissionData = responsefromCompiler.data;
+        console.log("Submission Data: ", submissionData);
+        await updateDB("Main", "Submissions", { email: email, token: submissionToken }, { $set: submissionData });
+    } catch (error) {
+        console.log("Error in updating submission with result, because compiler don't have the result");
+    }
+}
 
 async function fetchSubmissions(req, res) {
 

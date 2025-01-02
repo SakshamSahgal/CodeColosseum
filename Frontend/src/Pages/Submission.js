@@ -8,6 +8,7 @@ import StdoutPallet from '../Components/StdoutPallet';
 import CompilerOutputPallet from '../Components/CompilerOutputPallet';
 import SubmissionCard from '../Components/Submission/SubmissionCard';
 import ThemeFooter from '../Components/CodeEditor/ThemeFooter';
+import StdinPallet from '../Components/StdinPallet';
 
 
 function Submission() {
@@ -68,6 +69,9 @@ function Submission() {
           </Card>
           <CompilerOutputPallet compile_output={submission.compile_output} />
           <StdoutPallet stdout={submission.stdout} />
+          <br />
+          <StdinPallet stdin={submission.stdin} isEditable={false} isExpanded={(submission.stdin === "" || submission.stdin === null) ? false : true } />
+          <br />
         </>
         ) : (
           <Alert variant="warning" className="text-center shadow-sm p-4 mt-4">

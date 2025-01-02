@@ -58,7 +58,7 @@ function SubmissionCard({ submission }) {
                                 <BsCheckCircle className="me-2" />
                                 Status
                             </td>
-                            <td>{submission.status.description}</td>
+                            <td>{submission.status?.description || 'N/A'}</td>
                         </tr>
                         <tr>
                             <td>

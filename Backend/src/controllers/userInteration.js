@@ -69,7 +69,7 @@ async function updateLog(req, log) {
 
         let AuthToken = req.headers.authorization;
         const decodedToken = jwt.decode(AuthToken);
-        console.log(decodedToken);
+        // console.log(decodedToken);
 
         let userLog = {
             email: decodedToken.email,
@@ -82,8 +82,8 @@ async function updateLog(req, log) {
             log: log
         }
 
-        console.log(userLog);
-
+        // console.log(userLog);
+        
         await writeDB("Main", "UserLogs", userLog);
     }
     catch (error) {

@@ -7,7 +7,7 @@ function SubmissionCard({ submission }) {
     const redirectTosubmission = (submissionToken) => {
         const user = JSON.parse(localStorage.getItem("userInfo"));
         window.location.href = `/submission/${user.email}/${submissionToken}`;
-      };
+    };
 
     return (
         <Card

@@ -1,7 +1,11 @@
 
 const { readDB } = require("../db/mongoOperations.js");
+const { updateLog } = require("./userInteration.js");
 
 async function about(req, res) {
+
+    updateLog(req, `About page visited`);
+
     try {
         const response = await readDB("PlaceHolder", "About", {}, { _id: 0 });
         res.status(200).send(response);
