@@ -24,17 +24,16 @@ Welcome to **CodeColosseum**, a platform for testing code performance and compet
 3. **Compare Submissions**  
    Review other submissions to learn optimization techniques.
 
-4. **Compete!**  
-   Submit your best code to challenge others on the leaderboard.
 
 ## Get Started 🚪
 
-1. Sign up at [CodeColosseum](https://www.codecolosseum.com) 🔗  
+1. Sign up at [CodeColosseum](codecolosseum.westus2.cloudapp.azure.com) 🔗  
 2. Explore challenges and submit your solutions.  
-3. Join the community of coders and improve together!  
+3. Join the community of coders and improve together!
 
 ---
 
 Made for developers, by developers. ❤️  
 
-📩 Questions or feedback? Reach us at [support@codecolosseum.com](mailto:support@codecolosseum.com).
+Here is a system Architecture :
+
