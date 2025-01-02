@@ -83,7 +83,7 @@ async function updateLog(req, log) {
         }
 
         // console.log(userLog);
-        
+
         await writeDB("Main", "UserLogs", userLog);
     }
     catch (error) {
@@ -98,7 +98,7 @@ async function userActivity(req, res) {
     console.log(req.params.pageNumber);
     console.log(req.params.email);
 
-    if(!req.params.email){
+    if (!req.params.email) {
         res.status(400).json({ message: "email is required" });
         return;
     }
@@ -114,9 +114,9 @@ async function userActivity(req, res) {
     }
 
     try {
-
+        let query = { email: req.params.email };
         let maxEntriesPerPage = Math.max(Math.min(Number(req.params.maxEntriesPerPage), 100), 1) //Clamping the maxEntriesPerPage between 1 and 100
-        let NoOfEntries = await countDocuments("Main", "UserLogs", {}) //Counting the number of entries in the database
+        let NoOfEntries = await countDocuments("Main", "UserLogs", query) //Counting the number of entries in the database
         let TotalPages = Math.ceil(NoOfEntries / parseInt(maxEntriesPerPage)); //Calculating the total number of pages
         var curPage = Math.max(Math.min(Number(req.params.pageNumber), TotalPages), 1) //Clamping the page number between 1 and TotalPages
         const entriesToSkip = (parseInt(curPage) - 1) * parseInt(maxEntriesPerPage);    //calculate the number of entries to skip

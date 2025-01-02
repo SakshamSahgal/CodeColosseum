@@ -2,8 +2,8 @@ import { useParams } from "react-router";
 import { useEffect, useState } from "react";
 import makeApiRequest from "../Assets/Apis";
 import PagenationFooter from "../Components/Submissions/PagenationFooter";
-import { Pagination } from "react-bootstrap";
 import UserLogs from "../Components/UserLogs";
+import { Container, Row, Col, Card } from 'react-bootstrap';
 
 function UserActivity() {
     const { email } = useParams();
@@ -14,10 +14,9 @@ function UserActivity() {
     const [totalEntries, setTotalEntries] = useState(0);
 
     useEffect(() => {
-        console.log(email);
         makeApiRequest({
-            url: `admin/user/activity/${email}/${maxEntriesPerPage}/${currentPage}`, // This is the updated code
-            method: 'GET', // This is the updated code
+            url: `admin/user/activity/${email}/${maxEntriesPerPage}/${currentPage}`,
+            method: 'GET',
             onSuccess: (data) => {
                 setActivityData(data.userLogs);
                 setTotalPages(data.totalPages);
@@ -36,28 +35,30 @@ function UserActivity() {
         setCurrentPage(1); // Reset to the first page when entries per page change
     };
 
-    const renderPagination = () => {
-        let items = [];
-        for (let page = 1; page <= totalPages; page++) {
-            items.push(
-                <Pagination.Item
-                    key={page}
-                    active={page === currentPage}
-                    onClick={() => handlePageChange(page)}
-                >
-                    {page}
-                </Pagination.Item>
-            );
-        }
-        return items;
-    };
-
     return (
-    <>
-        <h1>User Activity (Total Logs : {totalEntries})</h1>
-        <UserLogs activityData={activityData} />
-        <PagenationFooter maxEntriesPerPage={maxEntriesPerPage} handleEntriesChange={handleEntriesChange} renderPagination={renderPagination} />
-    </>
+        <Container className="mt-5">
+            <Row className="mb-4">
+                <Col>
+                    <h1>User Activity (Total Logs: {totalEntries})</h1>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <Card>
+                        <Card.Body>
+                            <UserLogs activityData={activityData} />
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
+            <PagenationFooter
+                maxEntriesPerPage={maxEntriesPerPage}
+                handleEntriesChange={handleEntriesChange}
+                currentPage={currentPage}
+                totalPages={totalPages}
+                handlePageChange={handlePageChange}
+            />
+        </Container>
     );
 }
 

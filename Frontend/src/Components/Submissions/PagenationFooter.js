@@ -1,6 +1,11 @@
 import { Container, Form, Pagination } from "react-bootstrap";
+import renderPagination from "../../Assets/renderPagenarion";
 
-function PagenationFooter({ maxEntriesPerPage, handleEntriesChange, renderPagination }) {
+
+
+
+function PagenationFooter({ maxEntriesPerPage, handleEntriesChange, currentPage, totalPages, handlePageChange }) {
+
     return (
         <div
             className="fixed-bottom bg-dark text-light py-3"
@@ -21,7 +26,7 @@ function PagenationFooter({ maxEntriesPerPage, handleEntriesChange, renderPagina
                         <option value={100}>100</option>
                     </Form.Select>
                 </Form.Group>
-                <Pagination className="mb-0">{renderPagination()}</Pagination>
+                <Pagination className="mb-0">{renderPagination(currentPage, totalPages, handlePageChange)}</Pagination>
             </Container>
         </div>
     )

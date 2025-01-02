@@ -74,11 +74,7 @@ function Users() {
                         )}
                     </Row>
                 </Container>
-                <PagenationFooter
-                    maxEntriesPerPage={maxEntriesPerPage}
-                    handleEntriesChange={handleEntriesChange}
-                    renderPagination={renderPagination}
-                />
+                <PagenationFooter maxEntriesPerPage={maxEntriesPerPage} handleEntriesChange={handleEntriesChange} currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
             </div>
         </div>
     );

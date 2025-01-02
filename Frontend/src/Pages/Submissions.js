@@ -1,7 +1,6 @@
 import makeApiRequest from "../Assets/Apis";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
-import { Pagination } from "react-bootstrap";
 import SimpleNavbar from "../Components/Navbar.js";
 import SubmissionsContainer from "../Components/Submissions/SubmissionsContainer.js";
 import PagenationFooter from "../Components/Submissions/PagenationFooter.js";
@@ -42,27 +41,13 @@ function Submissions() {
     setCurrentPage(1); // Reset to the first page when entries per page change
   };
 
-  const renderPagination = () => {
-    let items = [];
-    for (let page = 1; page <= totalPages; page++) {
-      items.push(
-        <Pagination.Item
-          key={page}
-          active={page === currentPage}
-          onClick={() => handlePageChange(page)}
-        >
-          {page}
-        </Pagination.Item>
-      );
-    }
-    return items;
-  };
+
 
   return (
     <>
       <SimpleNavbar />
       <SubmissionsContainer submissions={submissions} totalEntries={totalEntries} />
-      <PagenationFooter maxEntriesPerPage={maxEntriesPerPage} handleEntriesChange={handleEntriesChange} renderPagination={renderPagination} />
+      <PagenationFooter maxEntriesPerPage={maxEntriesPerPage} handleEntriesChange={handleEntriesChange} currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange}/>
     </>
   );
 }
