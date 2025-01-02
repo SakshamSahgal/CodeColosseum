@@ -14,10 +14,6 @@ RUN npm install
 ARG OAUTH_CLIENT_ID
 ARG DOMAIN
 
-#echo the args to the console
-RUN echo "OAUTH_CLIENT_ID: ${OAUTH_CLIENT_ID}"
-RUN echo "DOMAIN: ${DOMAIN}"
-
 # Run ls to see the contents of the directory
 RUN ls
 
