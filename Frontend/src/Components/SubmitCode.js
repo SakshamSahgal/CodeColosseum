@@ -19,6 +19,9 @@ function SubmitCode({ selectedLanguageId, sourceCode, stdin }) {
             },
             onSuccess: (data) => {
                alert('Submission created successfully');
+               //when the ok button is clicked, the page will be redirected to the submission page
+               const user = JSON.parse(localStorage.getItem('userInfo'));
+               window.location.href = `/submissions/${user.email}`;
             },
         });
     }

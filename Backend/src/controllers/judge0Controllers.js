@@ -72,12 +72,14 @@ function createSubmission(req, res) {
     };
     console.log(data);
 
-    updateLog(req, `Created a new submission`);
+    
 
     instance.post("/submissions/?base64_encoded=false&wait=false", data).then((response) => {
 
         // decoding the JWT token to get the email of the requester
         const decodedToken = jwt.decode(req.headers.authorization);
+
+        updateLog(req, `Created a new submission <a href="/submission/${decodedToken.email}/${response.data.token}">View Submission</a>`);        
 
         writeDB("Main", "Submissions", {
             email: decodedToken.email,
@@ -101,7 +103,7 @@ async function fetchSubmission(req, res) {
     const email = req.params.email;
     const submissionToken = req.params.submissionToken;
 
-    updateLog(req, `Fetched submission for ${email}`);
+    updateLog(req, `Fetched <a href="/submission/${email}/${submissionToken}">Submission</a> for <a href="/profile/${email}">${email}</a>`);
 
     let isUpdated = await isSubmissionAlreadyUpdated(submissionToken, email);
 
@@ -165,7 +167,7 @@ async function fetchSubmissions(req, res) {
     console.log(req.params.maxEntriesPerPage);
     console.log(req.params.pageNumber);
 
-    updateLog(req, `Fetched submissions for ${req.params.email}`);
+    updateLog(req, `Fetched submissions for <a href="/profile/${req.params.email}">${req.params.email}</a>`);
 
 
     if (!req.params.email) {
@@ -188,8 +190,9 @@ async function fetchSubmissions(req, res) {
         // console.log(languages);
 
         let projection = {
-            email: 0,
-            source_code: 0,
+            token: 1,
+            language_id: 1,
+            created_at: 1,
         };
 
         let query = {

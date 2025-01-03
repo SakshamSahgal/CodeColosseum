@@ -2,11 +2,10 @@
 import formatTimeElapsed from "../../Assets/Utils.js";
 import { Card } from "react-bootstrap";
 
-function SubmissionCard({ submission }) {
+function SubmissionCard({ submission, email }) {
 
     const redirectTosubmission = (submissionToken) => {
-        const user = JSON.parse(localStorage.getItem("userInfo"));
-        window.location.href = `/submission/${user.email}/${submissionToken}`;
+        window.location.href = `/submission/${email}/${submissionToken}`;
     };
 
     return (

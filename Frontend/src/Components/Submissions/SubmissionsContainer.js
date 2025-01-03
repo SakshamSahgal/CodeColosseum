@@ -3,7 +3,7 @@ import { Container, Row, Col, Alert } from 'react-bootstrap';
 import SubmissionCard from './SubmissionCard';
 
 
-function SubmissionsContainer({ submissions, totalEntries }) {
+function SubmissionsContainer({ submissions, totalEntries, email }) {
 
     //this means it's still loading
     if(submissions === null) {
@@ -23,7 +23,7 @@ function SubmissionsContainer({ submissions, totalEntries }) {
                 <Row xs={1} md={2} lg={3} className="g-4">
                     {submissions.map((submission) => (
                         <Col key={submission._id}>
-                            <SubmissionCard submission={submission} />
+                            <SubmissionCard submission={submission} email={email}/>
                         </Col>
                     ))}
                 </Row>

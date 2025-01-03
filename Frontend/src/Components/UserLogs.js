@@ -25,7 +25,11 @@ function UserLogs({ activityData }) {
                             <td>{log.osInfo.name}</td>
                             <td>{log.ip}</td>
                             <td>{log.deviceTypeInfo.name}</td>
-                            <td>{log.log}</td>
+                            <td><div
+                                dangerouslySetInnerHTML={{
+                                    __html: log.log,
+                                }}
+                            /></td>
                         </tr>
                     ))}
                 </tbody>

@@ -46,7 +46,7 @@ function Submissions() {
   return (
     <>
       <SimpleNavbar />
-      <SubmissionsContainer submissions={submissions} totalEntries={totalEntries} />
+      <SubmissionsContainer submissions={submissions} totalEntries={totalEntries} email={email}/>
       <PagenationFooter maxEntriesPerPage={maxEntriesPerPage} handleEntriesChange={handleEntriesChange} currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange}/>
     </>
   );
