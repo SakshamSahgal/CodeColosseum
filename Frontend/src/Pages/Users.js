@@ -51,9 +51,28 @@ function Users() {
                                 <Col key={user._id} className="mb-4">
                                     <div style={{ width: "24rem" }} className="text-center">
                                         <UserProfilePallet user={user} />
-                                        <Button href={`/admin/userActivity/${user.email}`} variant="dark" className="mt-3" style={{ width: "100%" }}>
-                                            View Activity
-                                        </Button>
+                                        <div className="mt-3">
+                                            <Row>
+                                                <Col>
+                                                    <Button
+                                                        href={`/admin/userActivity/${user.email}`}
+                                                        variant="dark"
+                                                        style={{ width: "100%" }}
+                                                    >
+                                                        View Activity
+                                                    </Button>
+                                                </Col>
+                                                <Col>
+                                                    <Button
+                                                        href={`/profile/${user.email}`}
+                                                        variant="dark"
+                                                        style={{ width: "100%" }}
+                                                    >
+                                                        View Profile
+                                                    </Button>
+                                                </Col>
+                                            </Row>
+                                        </div>
                                     </div>
                                 </Col>
                             ))

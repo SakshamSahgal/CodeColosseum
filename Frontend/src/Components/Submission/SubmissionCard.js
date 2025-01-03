@@ -11,7 +11,7 @@ function SubmissionCard({ submission }) {
                 <h3>Submission Details</h3>
                 {/* submitted by */}
                 <p>
-                    <strong>Submitted By:</strong> {submission.email}
+                    <strong>Submitted By:</strong> <a href={`/profile/${submission.email}`}>{submission.email}</a>
                 </p>
             </Card.Header>
             <Card.Body>

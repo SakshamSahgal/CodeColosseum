@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, ButtonGroup } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 // Import the themes
 import { abyss } from '@uiw/codemirror-theme-abyss';
 import { dracula } from '@uiw/codemirror-theme-dracula';
