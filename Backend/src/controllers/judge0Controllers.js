@@ -169,22 +169,6 @@ async function fetchSubmissions(req, res) {
 
     updateLog(req, `Fetched submissions for <a href="/profile/${req.params.email}">${req.params.email}</a>`);
 
-
-    if (!req.params.email) {
-        res.status(400).json({ message: "Email is required" });
-        return;
-    }
-
-    if (!req.params.maxEntriesPerPage || isNaN(req.params.maxEntriesPerPage)) {
-        res.status(400).json({ message: "maxEntriesPerPage is required" });
-        return;
-    }
-
-    if (!req.params.pageNumber || isNaN(req.params.pageNumber)) {
-        res.status(400).json({ message: "pageNumber is required" });
-        return;
-    }
-
     try {
         const languages = (await instance.get("/languages")).data;
         // console.log(languages);
@@ -210,8 +194,6 @@ async function fetchSubmissions(req, res) {
         console.log("maxEntriesPerPage: ", maxEntriesPerPage);
 
         //fetch all submissions of the user from the database and sort them in descending order of created_at so that the latest submission comes first in the array
-
-
         const submissions = (await skipRead("Main", "Submissions", query, projection, { created_at: -1 }, entriesToSkip, parseInt(maxEntriesPerPage)));
         // console.log(submissions);
 
