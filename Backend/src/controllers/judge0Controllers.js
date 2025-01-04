@@ -72,14 +72,14 @@ function createSubmission(req, res) {
     };
     console.log(data);
 
-    
+
 
     instance.post("/submissions/?base64_encoded=false&wait=false", data).then((response) => {
 
         // decoding the JWT token to get the email of the requester
         const decodedToken = jwt.decode(req.headers.authorization);
 
-        updateLog(req, `Created a new submission <a href="/submission/${decodedToken.email}/${response.data.token}">View Submission</a>`);        
+        updateLog(req, `Created a new submission <a href="/submission/${decodedToken.email}/${response.data.token}">View Submission</a>`);
 
         writeDB("Main", "Submissions", {
             email: decodedToken.email,
@@ -220,4 +220,22 @@ async function fetchSubmissions(req, res) {
 
 }
 
-module.exports = { systemInfo, configInfo, statistics, workers, fetchLanguages, createSubmission, fetchSubmission, fetchSubmissions };
+async function fetchHeatmapData(req, res) {
+    const email = req.params.email;
+    console.log("eeya");
+    const projection = {
+        created_at: 1,
+    };
+
+    const query = {
+        email: email,
+    };
+    try {
+        const submissions = await readDB("Main", "Submissions", query, projection);
+        res.status(200).json(submissions);
+    } catch (error) {
+        res.status(500).json(error);
+    }
+}
+
+module.exports = { systemInfo, configInfo, statistics, workers, fetchLanguages, createSubmission, fetchSubmission, fetchSubmissions, fetchHeatmapData };

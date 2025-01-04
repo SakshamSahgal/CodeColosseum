@@ -12,6 +12,7 @@
     "@uiw/codemirror-theme-github": "^4.23.7",
     "@uiw/codemirror-theme-okaidia": "^4.23.7",
     "@uiw/react-codemirror": "^4.23.7",
+    "@uiw/react-heat-map": "^2.3.2",
     "axios": "^1.7.9",
     "bootstrap": "^5.3.3",
     "react": "^18.2.0",
