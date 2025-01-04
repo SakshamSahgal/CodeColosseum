@@ -6,6 +6,7 @@ const adminRouter = require("./routes/adminRouter.js");
 const compilerRouter = require("./routes/compilerRouter.js");
 const profileRouter = require("./routes/profileRouter.js");
 const placeHolderRouter = require("./routes/placeHolder.js");
+const searchRouter = require("./routes/searchRouter.js");
 const path = require('path');
 
 const { isAdmin, isUser } = require("./middlewares/TokenValidation.js");
@@ -22,8 +23,8 @@ app.use("/api/auth", authRouter);
 app.use("/api/admin", isAdmin, updateActivity, adminRouter);
 app.use("/api/compiler", isUser, updateActivity, compilerRouter);
 app.use("/api/user", isUser, updateActivity, profileRouter);
+app.use("/api/search", isUser, updateActivity, searchRouter);
 app.use("/api/placeholder", isUser, updateActivity, placeHolderRouter);
-
 
 app.get("/api/health", (req, res) => {
   res.status(200).send("Health OK");

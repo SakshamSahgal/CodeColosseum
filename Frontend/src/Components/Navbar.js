@@ -21,6 +21,7 @@ function SimpleNavbar() {
           <Nav className="me-auto">
             <Nav.Link href="/dashboard">Dashboard</Nav.Link>
             <Nav.Link href={`/submissions/${userInfo?.email}`}>Submissions</Nav.Link>
+            <Nav.Link href="/users">Users</Nav.Link>
             <Nav.Link href="/about">About</Nav.Link>
           </Nav>
           {userInfo && <ProfileDropdown userInfo={userInfo} />}

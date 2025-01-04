@@ -1,10 +1,10 @@
-import SimpleNavbar from '../Components/Navbar';
+import SimpleNavbar from '../../Components/Navbar.js';
 import { useState, useEffect } from 'react';
 import { Tab } from 'react-bootstrap';
 import { Nav } from 'react-bootstrap';
-import AdminTab from '../Assets/AdminTab';
-import makeApiRequest from '../Assets/Apis';
-import AdminAccessOnly from '../Components/AdminAccessOnly.js';
+import AdminTab from '../../Assets/AdminTab.js';
+import makeApiRequest from '../../Assets/Apis.js';
+import AdminAccessOnly from '../../Components/AdminAccessOnly.js';
 
 function AdminConsole() {
 

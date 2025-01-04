@@ -7,6 +7,6 @@ router.get("/systemInfo", systemInfo);
 router.get("/configInfo", configInfo);
 router.get("/statistics", statistics);
 router.get("/workers", workers);
-router.get("/users/:maxEntriesPerPage/:pageNumber", validateMaxEntriesPerPage, validatePageNumber, users);
-router.get("/user/activity/:email/:maxEntriesPerPage/:pageNumber", validateEmail, validatePageNumber, validateMaxEntriesPerPage, userActivity);
+router.get("/users/:maxEntriesPerPage/:pageNumber", validateMaxEntriesPerPage, validatePageNumber, users);  //returns all users with pagination for admin analytics
+router.get("/user/activity/:email/:maxEntriesPerPage/:pageNumber", validateEmail, validatePageNumber, validateMaxEntriesPerPage, userActivity); //returns all activity of a user with pagination for admin analytics
 module.exports = router;

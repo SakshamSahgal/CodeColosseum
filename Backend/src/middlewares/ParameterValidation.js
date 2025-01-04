@@ -27,4 +27,15 @@ function validateMaxEntriesPerPage(req, res, next) {
     next();
 }
 
-module.exports = { validateEmail, validatePageNumber, validateMaxEntriesPerPage };
+function ValidateSearchResultQuery(req, res, next) {
+    const { search } = req.params;
+    console.log(search);
+    // Check if search parameter is missing or empty
+    if (!search || search.trim() === "") {
+        return res.status(400).json({ error: "Search query cannot be empty." });
+    }
+
+    next();
+}
+
+module.exports = { validateEmail, validatePageNumber, validateMaxEntriesPerPage, ValidateSearchResultQuery };

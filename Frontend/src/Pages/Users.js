@@ -1,97 +1,84 @@
-import { useState, useEffect } from 'react';
+import React, { useState } from "react";
 import makeApiRequest from "../Assets/Apis";
-import PagenationFooter from '../Components/Submissions/PagenationFooter';
-import { Row, Col, Container, Button } from 'react-bootstrap';
-import UserProfilePallet from './UserProfilePallet';
-import AdminAccessOnly from '../Components/AdminAccessOnly.js';
+import { Form, FormControl, Button, Table } from "react-bootstrap";
+import SimpleNavbar from "../Components/Navbar";
+import { Alert } from "react-bootstrap";
+import { FaSearch } from 'react-icons/fa'; // Import the search icon
+
 
 function Users() {
-    const [users, setUsers] = useState({});
-    const [maxEntriesPerPage, setMaxEntriesPerPage] = useState(5); // Default entries per page
-    const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
-    const [totalEntries, setTotalEntries] = useState(0);
-    const [isAdmin, setIsAdmin] = useState(false);
+    const [users, setUsers] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
 
-    useEffect(() => {
+    const fetchUsers = async () => {
+        if (searchTerm === "") {
+            alert("Please enter a search term");
+            return;
+        }
         makeApiRequest({
-            url: `/admin/users/${maxEntriesPerPage}/${currentPage}`,
+            url: `/search/users/${searchTerm}`,
             method: "GET",
             onSuccess: (data) => {
-                setUsers(data.users);
-                setTotalPages(data.totalPages);
-                setTotalEntries(data.totalEntries);
-                setIsAdmin(true);
+                console.log("Fetched users:", data);
+                setUsers(data);
             },
             onError: (error) => {
-                setUsers(null);
-                setIsAdmin(false);
+                console.error("Failed to fetch users:", error);
             }
         });
-    }, [currentPage, maxEntriesPerPage]);
-
-    const handlePageChange = (page) => {
-        setCurrentPage(page);
     };
 
-    const handleEntriesChange = (event) => {
-        const value = parseInt(event.target.value, 10);
-        setMaxEntriesPerPage(value);
-        setCurrentPage(1); // Reset to the first page when entries per page change
-    };
+    return (<>
+        <SimpleNavbar />
+        <div className="container mt-4">
+            <h1 className="mb-4">Users</h1>
 
-    return (
-        isAdmin ? (
-            <div>
-                <h1 className="my-4 text-center">User Activity ({totalEntries ? totalEntries : 0} Users Total)</h1>
-                <Container>
-                    <Row>
-                        {users && users.length > 0 ? (
-                            users.map(user => (
-                                <Col key={user._id} className="mb-4">
-                                    <div style={{ width: "24rem" }} className="text-center">
-                                        <UserProfilePallet user={user} />
-                                        <div className="mt-3">
-                                            <Row>
-                                                <Col>
-                                                    <Button
-                                                        href={`/admin/userActivity/${user.email}`}
-                                                        variant="dark"
-                                                        style={{ width: "100%" }}
-                                                    >
-                                                        View Activity
-                                                    </Button>
-                                                </Col>
-                                                <Col>
-                                                    <Button
-                                                        href={`/profile/${user.email}`}
-                                                        variant="dark"
-                                                        style={{ width: "100%" }}
-                                                    >
-                                                        View Profile
-                                                    </Button>
-                                                </Col>
-                                            </Row>
-                                        </div>
-                                    </div>
-                                </Col>
-                            ))
-                        ) : (
-                            <p>No users found.</p>
-                        )}
-                    </Row>
-                </Container>
-                <PagenationFooter
-                    maxEntriesPerPage={maxEntriesPerPage}
-                    handleEntriesChange={handleEntriesChange}
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    handlePageChange={handlePageChange}
+            {/* Search Form */}
+            <Form className="d-flex mb-4">
+                <FormControl
+                    type="text"
+                    placeholder="Search users"
+                    className="me-2"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
                 />
-            </div>
-        ) : (
-            <AdminAccessOnly />
-        )
+                <Button variant="primary" onClick={fetchUsers}>
+                    <FaSearch style={{ marginRight: '8px' }} />  {/* Add the icon with some spacing */}
+                    Search
+                </Button>
+            </Form>
+
+            {/* Users Table */}
+
+            {users.length > 0 ? (
+                <Table striped bordered hover>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {users.map((user) => (
+                            <tr
+                                key={user._id}
+                                style={{ cursor: 'pointer' }}
+                                onClick={() => window.location.href = `/profile/${user.email}`}
+                            >
+                                <td>{user.name}</td>
+                                <td>{user.email}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </Table>
+            ) : (
+                <Alert variant="warning" className="text-center shadow-sm p-4 mt-4">
+                    <h4 className="mb-3">Your search returned no results</h4>
+                    <p> either you failed to query the abyss, or the void  holds no answer in its shadows. </p>
+                </Alert>
+            )}
+        </div>
+    </>
     );
 }
 
