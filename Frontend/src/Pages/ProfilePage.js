@@ -39,7 +39,6 @@ function ProfilePage() {
                 <Row className="text-center mt-5">
                     <HeatmapPallet email={email} />
                 </Row>
-
             </Container>
         </>
     );

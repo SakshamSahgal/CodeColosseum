@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Card, Image } from "react-bootstrap";
 import { FaUserCircle } from "react-icons/fa";
+import AlertBox from "../Components/AlertBox";
 
 function UserProfilePallet({ user }) {
 
@@ -11,7 +12,7 @@ function UserProfilePallet({ user }) {
             <Card style={{ width: "24rem" }} className="text-center shadow-sm">
                 <Card.Body>
                     <FaUserCircle style={{ width: 96, height: 96 }} className="mb-3" />
-                    <h4>A user by that name is absent from the database, lost to the void of unrecorded entries.</h4>
+                    <AlertBox heading={"User Not Found"} message={"A user by that name is absent from the database, lost to the void of unrecorded entries."} />
                 </Card.Body>
             </Card>
         )

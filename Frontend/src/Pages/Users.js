@@ -2,31 +2,33 @@ import React, { useState } from "react";
 import makeApiRequest from "../Assets/Apis";
 import { Form, FormControl, Button, Table } from "react-bootstrap";
 import SimpleNavbar from "../Components/Navbar";
-import { Alert } from "react-bootstrap";
+import AlertBox from "../Components/AlertBox";
 import { FaSearch } from 'react-icons/fa'; // Import the search icon
 
 function Users() {
-    const [users, setUsers] = useState([]);
+    const [users, setUsers] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
+    const [error, setError] = useState(null);
 
     const fetchUsers = async () => {
-        if (searchTerm === "") {
+        //trip the search term of leading and trailing white space
+        if (searchTerm.trim() === "") {
             alert("Please enter a search term");
             return;
         }
         makeApiRequest({
-            url: `/search/users/${searchTerm}`,
+            url: `/search/users/${searchTerm.trim()}`,
             method: "GET",
             onSuccess: (data) => {
                 console.log("Fetched users:", data);
                 setUsers(data);
+                setError(null);
             },
             onError: (error) => {
-                console.error("Failed to fetch users:", error);
+                setError(error.response.data);
             }
         });
     };
-
     // Handle form submission (Enter key press)
     const handleSubmit = (e) => {
         e.preventDefault();  // Prevent the default form submission
@@ -53,35 +55,36 @@ function Users() {
                 </Button>
             </Form>
 
-            {/* Users Table */}
-            {users.length > 0 ? (
-                <Table striped bordered hover>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Email</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {users.map((user) => (
-                            <tr
-                                key={user._id}
-                                style={{ cursor: 'pointer' }}
-                                onClick={() => window.location.href = `/profile/${user.email}`}
-                            >
-                                <td>{user.name}</td>
-                                <td>{user.email}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </Table>
+            {error ? (
+                <AlertBox heading={error.heading} message={error.message} />
             ) : (
-                <Alert variant="warning" className="text-center shadow-sm p-4 mt-4">
-                    <h4 className="mb-3">Your search returned no results</h4>
-                    <p> either you failed to query the abyss, or the void holds no answer in its shadows. </p>
-                </Alert>
-            )}
-        </div>
+                (users ? (
+                    <Table striped bordered hover>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                            </tr >
+                        </thead >
+                        <tbody>
+                            {users.map((user) => (
+                                <tr
+                                    key={user._id}
+                                    style={{ cursor: 'pointer' }}
+                                    onClick={() => window.location.href = `/profile/${user.email}`}
+                                >
+                                    <td>{user.name}</td>
+                                    <td>{user.email}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table >
+                ) : (
+                    <AlertBox heading={"Cast Your Query"} message={"Search boldly—the void holds answers, or perhaps only more questions. "} />
+                ))
+            )
+            }
+        </div >
     </>
     );
 }

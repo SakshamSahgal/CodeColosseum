@@ -1,12 +1,12 @@
 import React from 'react';
 import { Container, Row, Col, Alert } from 'react-bootstrap';
 import SubmissionCard from './SubmissionCard';
-
+import AlertBox from '../../Components/AlertBox';
 
 function SubmissionsContainer({ submissions, totalEntries, email }) {
 
     //this means it's still loading
-    if(submissions === null) {
+    if (submissions === null) {
         return (
             <Container className="text-center">
                 <h1 className="my-4">Loading Submissions...</h1>
@@ -23,18 +23,12 @@ function SubmissionsContainer({ submissions, totalEntries, email }) {
                 <Row xs={1} md={2} lg={3} className="g-4">
                     {submissions.map((submission) => (
                         <Col key={submission._id}>
-                            <SubmissionCard submission={submission} email={email}/>
+                            <SubmissionCard submission={submission} email={email} />
                         </Col>
                     ))}
                 </Row>
             ) : (
-                <Alert variant="warning" className="text-center shadow-sm p-4 mt-4">
-                    <h4 className="mb-3">No Submissions Found</h4>
-                    <p>
-                        The user may dwell outside the database's reach or linger in silence,
-                        having yet to leave a trace.
-                    </p>
-                </Alert>
+                <AlertBox heading={"No Submissions Found"} message={"The user may dwell outside the database's reach or linger in silence, having yet to leave a trace."} />
             )}
         </Container>
     );
