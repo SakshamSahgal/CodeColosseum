@@ -1,27 +1,32 @@
 import React from 'react';
 import CodeMirror from '@uiw/react-codemirror';
-import { Accordion, Card } from 'react-bootstrap';
 
 function StdinPallet({ setStdin, stdin = "", isEditable = true, isExpanded = false }) {
     return (
-        <Accordion defaultActiveKey={isExpanded ? "0" : "1"}>
-            <Accordion.Item eventKey="0">
-                <Accordion.Header>Input</Accordion.Header>
-                <Accordion.Body>
-                    <Card.Body>
-                        <CodeMirror
-                            value={stdin}
-                            height="200px"
-                            onChange={(editor, data, value) => {
-                                console.log(editor);
-                                setStdin(editor);
-                            }}
-                            editable={isEditable}
-                        />
-                    </Card.Body>
-                </Accordion.Body>
-            </Accordion.Item>
-        </Accordion>
+        <div
+            style={{
+                height: '100%', // Ensure the parent container is used for height
+                display: 'flex', // Flexbox for dynamic resizing
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'stretch',
+            }}
+        >
+            <CodeMirror
+                value={stdin}
+                onChange={(editor, data, value) => {
+                    console.log(editor);
+                    setStdin(editor);
+                }}
+                editable={isEditable}
+                style={{
+                    height: '80%', // 80% of the parent container
+                    flexGrow: 1, // Ensures it stretches if parent resizes
+                    border: '1px solid #ccc', // Optional styling for better visibility
+                    borderRadius: '4px',
+                }}
+            />
+        </div>
     );
 }
 
