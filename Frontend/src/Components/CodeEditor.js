@@ -12,7 +12,7 @@ function CodeEditor() {
     const [languages, setLanguages] = useState([]);
     const [selectedLanguageId, setSelectedLanguageId] = useState(-1);
     const [sourceCode, setSourceCode] = useState(`#include <iostream>\nusing namespace std;\nint main() {\n cout << "Hello, World!";\n return 0;\n}`);
-    const [stdin, setStdin] = useState('');
+    
     const [theme, setTheme] = useState('default'); // Default theme
     const [activeTab, setActiveTab] = useState('codeEditor'); // Tracks active tab
 

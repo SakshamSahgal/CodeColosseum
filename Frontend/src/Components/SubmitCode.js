@@ -1,7 +1,8 @@
 import makeApiRequest from "../Assets/Apis";
 import { Button, Col, Row } from "react-bootstrap";
+import { FaPlay } from "react-icons/fa";
 
-function SubmitCode({ selectedLanguageId, sourceCode, stdin }) {
+function SubmitCode({ selectedLanguageId, sourceCode, stdin, submissionName }) {
 
     const createSubmission = () => {
         console.log(selectedLanguageId, sourceCode, stdin);
@@ -16,6 +17,7 @@ function SubmitCode({ selectedLanguageId, sourceCode, stdin }) {
                 language_id: selectedLanguageId,
                 source_code: sourceCode,
                 stdin: stdin,
+                submissionName: submissionName,
             },
             onSuccess: (data) => {
                alert('Submission created successfully');
@@ -27,9 +29,9 @@ function SubmitCode({ selectedLanguageId, sourceCode, stdin }) {
     }
 
     return (
-        <Row className='p-3'>
+        <Row>
             <Col>
-                <Button variant="primary" className="w-100" onClick={createSubmission}>Submit</Button>
+                <Button variant="primary" className="w-100" onClick={createSubmission}>Submit <FaPlay className="mx-1" /></Button>
             </Col>
         </Row>
     )

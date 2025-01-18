@@ -13,7 +13,7 @@ function LanguageDropdown({ languages = [], selectedLanguageId = -1, setSelected
             if (selectedLang) {
                 setLanguageSelected(selectedLang.name);
             } else {
-                setLanguageSelected("Select Language");
+                setLanguageSelected("Language");
             }
         }
     }, [languages, selectedLanguageId]);

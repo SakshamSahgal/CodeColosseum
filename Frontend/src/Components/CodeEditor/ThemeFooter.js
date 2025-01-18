@@ -1,63 +1,55 @@
-import React from 'react';
-import { Button } from 'react-bootstrap';
-// Import the themes
+import React, { useState } from 'react';
+import { Button, ButtonGroup } from 'react-bootstrap';
+
+// Import themes inside ThemeFooter
 import { abyss } from '@uiw/codemirror-theme-abyss';
 import { dracula } from '@uiw/codemirror-theme-dracula';
 import { okaidia } from '@uiw/codemirror-theme-okaidia';
-import { githubLight } from '@uiw/codemirror-theme-github'; // GitHub theme
-import { githubDark } from '@uiw/codemirror-theme-github'; // GitHub theme
+import { githubLight } from '@uiw/codemirror-theme-github';
+import { githubDark } from '@uiw/codemirror-theme-github';
 
-function ThemeFooter({ theme, handleThemeChange }) {
+// Import icons
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+
+const themes = [
+  { name: 'default', value: undefined }, // Default theme
+  { name: 'abyss', value: abyss },
+  { name: 'dracula', value: dracula },
+  { name: 'okaidia', value: okaidia },
+  { name: 'githubLight', value: githubLight },
+  { name: 'githubDark', value: githubDark },
+];
+
+function ThemeFooter({ currentThemeName, handleThemeChange }) {
+  const [currentIndex, setCurrentIndex] = useState(
+    themes.findIndex((theme) => theme.name === currentThemeName) || 0
+  );
+
+  const handleNext = () => {
+    const nextIndex = (currentIndex + 1) % themes.length;
+    setCurrentIndex(nextIndex);
+    handleThemeChange(themes[nextIndex]);
+  };
+
+  const handlePrevious = () => {
+    const prevIndex = (currentIndex - 1 + themes.length) % themes.length;
+    setCurrentIndex(prevIndex);
+    handleThemeChange(themes[prevIndex]);
+  };
+
   return (
-    <div className="d-flex flex-wrap justify-content-center">
-      <Button
-        size="sm"
-        variant={theme === 'default' ? 'primary' : 'secondary'}
-        onClick={() => handleThemeChange('default')}
-        className="m-1"
-      >
-        Default
-      </Button>
-      <Button
-        size="sm"
-        variant={theme === abyss ? 'primary' : 'secondary'}
-        onClick={() => handleThemeChange(abyss)}
-        className="m-1"
-      >
-        abyss
-      </Button>
-      <Button
-        size="sm"
-        variant={theme === dracula ? 'primary' : 'secondary'}
-        onClick={() => handleThemeChange(dracula)}
-        className="m-1"
-      >
-        dracula
-      </Button>
-      <Button
-        size="sm"
-        variant={theme === okaidia ? 'primary' : 'secondary'}
-        onClick={() => handleThemeChange(okaidia)}
-        className="m-1"
-      >
-        okaidia
-      </Button>
-      <Button
-        size="sm"
-        variant={theme === githubLight ? 'primary' : 'secondary'}
-        onClick={() => handleThemeChange(githubLight)}
-        className="m-1"
-      >
-        githubLight
-      </Button>
-      <Button
-        size="sm"
-        variant={theme === githubDark ? 'primary' : 'secondary'}
-        onClick={() => handleThemeChange(githubDark)}
-        className="m-1"
-      >
-        githubDark
-      </Button>
+    <div className="d-flex justify-content-center align-items-center">
+      <ButtonGroup>
+        <Button size="sm" variant="secondary" onClick={handlePrevious}>
+          <FaArrowLeft />
+        </Button>
+        <Button size="sm" variant="primary" disabled>
+          {themes[currentIndex].name}
+        </Button>
+        <Button size="sm" variant="secondary" onClick={handleNext}>
+          <FaArrowRight />
+        </Button>
+      </ButtonGroup>
     </div>
   );
 }
