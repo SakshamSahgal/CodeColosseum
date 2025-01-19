@@ -4,22 +4,21 @@ import makeApiRequest from '../Assets/Apis';
 import { Card, Spinner, Container, Alert } from 'react-bootstrap';
 import SimpleNavbar from '../Components/Navbar';
 import CodeMirror from '@uiw/react-codemirror';
-import StdoutPallet from '../Components/StdoutPallet';
-import CompilerOutputPallet from '../Components/CompilerOutputPallet';
 import SubmissionCard from '../Components/Submission/SubmissionCard';
 import ThemeFooter from '../Components/CodeEditor/ThemeFooter';
-import StdinPallet from '../Components/StdinPallet';
-
+import { okaidia } from '@uiw/codemirror-theme-okaidia';
+import { cpp } from "@codemirror/lang-cpp";
+import StatsDisplayBox from '../Components/Submission/StatsDisplayBox';
 
 function Submission() {
   const { submissionToken, email } = useParams();
   const [submission, setSubmission] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [theme, setTheme] = useState('default');
+  const [currentTheme, setCurrentTheme] = useState({ name: 'okaidia', value: okaidia });
 
   const handleThemeChange = (theme) => {
-    setTheme(theme);
-  }
+    setCurrentTheme(theme);
+  };
 
   useEffect(() => {
     makeApiRequest({
@@ -58,20 +57,19 @@ function Submission() {
             <Card.Body>
               <CodeMirror
                 value={submission.source_code ? submission.source_code : ''}
-                theme={theme === 'default' ? undefined : theme}
+                theme={currentTheme.value} // Apply the selected theme
                 height="500px"
                 editable={false}
+                extensions={[cpp()]}
               />
             </Card.Body>
             <Card.Footer className="text-center bg-dark text-light">
-              <ThemeFooter theme={theme} handleThemeChange={handleThemeChange} />
+              <ThemeFooter currentThemeName={currentTheme.name} handleThemeChange={handleThemeChange} />
             </Card.Footer>
           </Card>
-          <CompilerOutputPallet compile_output={submission.compile_output} />
-          <StdoutPallet stdout={submission.stdout} />
-          <br />
-          <StdinPallet stdin={submission.stdin} isEditable={false} isExpanded={(submission.stdin === "" || submission.stdin === null) ? false : true } />
-          <br />
+          <StatsDisplayBox title={"Compiler output"} content={submission.compile_output} />
+          <StatsDisplayBox title={"stdout"} content={submission.stdout} />
+          <StatsDisplayBox title={"stdin"} content={submission.stdin} />
         </>
         ) : (
           <Alert variant="warning" className="text-center shadow-sm p-4 mt-4">

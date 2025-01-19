@@ -6,7 +6,6 @@ import { okaidia } from '@uiw/codemirror-theme-okaidia';
 import CodeTab from '../Components/CodeTab';
 import InputTab from '../Components/InputTab';
 import OutputTab from '../Components/OutputTab';
-import SubmitCode from '../Components/SubmitCode';
 
 function Dashboard() {
   const [stdin, setStdin] = useState('');

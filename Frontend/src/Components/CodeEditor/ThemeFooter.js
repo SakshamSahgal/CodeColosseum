@@ -20,6 +20,7 @@ const themes = [
   { name: 'githubDark', value: githubDark },
 ];
 
+// A component that takes the current theme name and a function to change the theme, and displays a button group to change the theme
 function ThemeFooter({ currentThemeName, handleThemeChange }) {
   const [currentIndex, setCurrentIndex] = useState(
     themes.findIndex((theme) => theme.name === currentThemeName) || 0

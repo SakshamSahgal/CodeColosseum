@@ -1,19 +1,19 @@
-import React from 'react';
-import CodeMirror from '@uiw/react-codemirror';
 import { Accordion, Card } from 'react-bootstrap';
+import CodeMirror from '@uiw/react-codemirror';
 
-function CompilerOutputPallet({ compile_output }) {
-    if (!compile_output) {
+
+function StatsDisplayBox({ content, title }) {
+    if (!content) {
         return null;
     }
     return (
-        <Accordion className='mt-3' defaultActiveKey={compile_output ? "0" : "1"}>
+        <Accordion className='mt-3' defaultActiveKey={content ? "0" : "1"}>
             <Accordion.Item eventKey="0">
-                <Accordion.Header>Compiler output</Accordion.Header>
+                <Accordion.Header>{title}</Accordion.Header>
                 <Accordion.Body>
                     <Card.Body>
                         <CodeMirror
-                            value={compile_output ? compile_output : ''}
+                            value={content ? content : ''}
                             height="500px"
                             editable={false}
                         />
@@ -24,4 +24,4 @@ function CompilerOutputPallet({ compile_output }) {
     );
 }
 
-export default CompilerOutputPallet;
+export default StatsDisplayBox;

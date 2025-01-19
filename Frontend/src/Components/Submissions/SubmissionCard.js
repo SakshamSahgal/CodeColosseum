@@ -1,32 +1,21 @@
-
+import React from "react";
+import { Button } from "react-bootstrap";
 import formatTimeElapsed from "../../Assets/Utils.js";
-import { Card } from "react-bootstrap";
 
-function SubmissionCard({ submission, email }) {
-
+function SubmissionRow({ submission, email }) {
     const redirectTosubmission = (submissionToken) => {
         window.location.href = `/submission/${email}/${submissionToken}`;
     };
 
     return (
-        <Card
-            className="h-100 shadow-sm"
-            onClick={() => redirectTosubmission(submission.token)}
+        <tr
             style={{ cursor: "pointer" }}
+            onClick={() => redirectTosubmission(submission.token)}
         >
-            <Card.Body>
-                <Card.Title className="text-primary">
-                    Submission Details
-                </Card.Title>
-                <Card.Text>
-                    <strong>Submitted:</strong> {formatTimeElapsed(submission.created_at)}
-                </Card.Text>
-                <Card.Text>
-                    <strong>Language:</strong> {submission.language_name}
-                </Card.Text>
-            </Card.Body>
-        </Card>
+            <td>{formatTimeElapsed(submission.created_at)}</td>
+            <td>{submission.language_name}</td>
+        </tr>
     );
 }
 
-export default SubmissionCard;
+export default SubmissionRow;

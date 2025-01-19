@@ -4,6 +4,7 @@ import { useParams } from "react-router";
 import SimpleNavbar from "../Components/Navbar.js";
 import SubmissionsContainer from "../Components/Submissions/SubmissionsContainer.js";
 import PagenationFooter from "../Components/Submissions/PagenationFooter.js";
+import { Container, Row, Col } from "react-bootstrap";
 
 function Submissions() {
   const { email } = useParams();
@@ -46,8 +47,18 @@ function Submissions() {
   return (
     <>
       <SimpleNavbar />
-      <SubmissionsContainer submissions={submissions} totalEntries={totalEntries} email={email}/>
-      <PagenationFooter maxEntriesPerPage={maxEntriesPerPage} handleEntriesChange={handleEntriesChange} currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange}/>
+      <Container className='my-5 rounded shadow' fluid style={{ height: '82vh' }} >
+        <Row className='my-3'>
+          <Col md={6} style={{ borderRight: '2px solid #ddd' }}> {/* Vertical Line Here */}
+            <SubmissionsContainer submissions={submissions} totalEntries={totalEntries} email={email} />
+            <PagenationFooter maxEntriesPerPage={maxEntriesPerPage} handleEntriesChange={handleEntriesChange} currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
+          </Col>
+          <Col md={6} style={{ borderLeft: '2px solid #ddd' }}> {/* Vertical Line Here */}
+
+          </Col>
+        </Row>
+
+      </Container>
     </>
   );
 }
