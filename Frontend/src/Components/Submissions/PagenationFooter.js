@@ -4,11 +4,11 @@ import renderPagination from "../../Assets/renderPagenarion";
 
 
 
-function PagenationFooter({ maxEntriesPerPage, handleEntriesChange, currentPage, totalPages, handlePageChange }) {
+function PagenationFooter({ maxEntriesPerPage, handleEntriesChange, currentPage, totalPages, handlePageChange, bottom = true }) {
 
     return (
         <div
-            className="fixed-bottom bg-dark text-light py-3"
+            className={`bg-dark text-light py-3 ${bottom ? "fixed-bottom" : ""}`}
             style={{ borderTop: "2px solid #444" }}
         >
             <Container className="d-flex justify-content-between align-items-center">

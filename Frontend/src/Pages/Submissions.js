@@ -51,7 +51,7 @@ function Submissions() {
         <Row className='my-3'>
           <Col md={6} style={{ borderRight: '2px solid #ddd' }}> {/* Vertical Line Here */}
             <SubmissionsContainer submissions={submissions} totalEntries={totalEntries} email={email} />
-            <PagenationFooter maxEntriesPerPage={maxEntriesPerPage} handleEntriesChange={handleEntriesChange} currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
+            <PagenationFooter maxEntriesPerPage={maxEntriesPerPage} handleEntriesChange={handleEntriesChange} currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} bottom={false} />
           </Col>
           <Col md={6} style={{ borderLeft: '2px solid #ddd' }}> {/* Vertical Line Here */}
 
